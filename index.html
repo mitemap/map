@@ -5,773 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map Studio - Professional Contour & Terrain Maps</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:'Inter', sans-serif;
-        }
-        :root{
-            --primary:#165DFF;
-            --secondary:#0F172A;
-            --gray:#F8FAFC;
-            --light:#ffffff;
-            --text:#1E293B;
-            --text-light:#64748B;
-            --danger:#EF4444;
-            --success:#10B981;
-            --radius:14px;
-            --shadow:0 4px 20px rgba(0,0,0,0.05);
-            --transition:all 0.3s ease;
-        }
-        body{
-            background:var(--gray);
-            color:var(--text);
-            line-height:1.5;
-        }
-        .navbar{
-            background:var(--light);
-            box-shadow:0 2px 10px rgba(0,0,0,0.04);
-            position:sticky;top:0;z-index:999;
-            padding:18px 0;
-        }
-        .nav-container{
-            max-width:1280px;margin:0 auto;padding:0 30px;
-            display:flex;justify-content:space-between;align-items:center;
-        }
-        .logo-area{
-            display:flex;align-items:center;gap:12px;
-            text-decoration:none;
-        }
-        .logo-img{
-            width:40px;height:40px;border-radius:8px;object-fit:cover;
-        }
-        .logo-text{
-            font-size:22px;font-weight:700;color:var(--primary);
-        }
-        .site-desc{
-            font-size:12px;color:var(--text-light);margin-left:2px;
-        }
-        .nav-menu{display:flex;gap:32px;align-items:center;}
-        .nav-link{
-            color:var(--text);text-decoration:none;font-weight:500;font-size:15px;
-            padding:8px 0;position:relative;transition:var(--transition);
-            cursor:pointer;
-        }
-        .nav-link:hover{color:var(--primary);}
-        .nav-link.active{color:var(--primary);}
-        .nav-link.active::after{
-            content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;
-            background:var(--primary);border-radius:1px;
-        }
-        .container{max-width:1280px;margin:45px auto;padding:0 30px;}
-        .page{display:none;animation:fadeIn 0.4s ease;}
-        .page.active{display:block;}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-        .page-title{font-size:32px;font-weight:700;margin-bottom:30px;color:var(--secondary);}
-        .section-desc{color:var(--text-light);margin-bottom:35px;max-width:800px;line-height:1.8;}
-
-        .card{
-            background:var(--light);border-radius:var(--radius);
-            box-shadow:var(--shadow);padding:30px;margin-bottom:25px;
-        }
-        .card-title{font-size:20px;font-weight:600;margin-bottom:20px;color:var(--secondary);display:flex;align-items:center;gap:8px;}
-        .card-title i{color:var(--primary);}
-
-        .admin-tabs{display:flex;gap:12px;margin-bottom:30px;flex-wrap:wrap;}
-        .admin-tab{padding:12px 24px;background:white;border:1px solid #E2E8F0;border-radius:8px;cursor:pointer;font-weight:500;transition:var(--transition);}
-        .admin-tab.active{background:var(--primary);color:white;border-color:var(--primary);}
-        .admin-panel{display:none;}
-        .admin-panel.active{display:block;}
-
-        .intro-section{display:flex;align-items:center;gap:40px;margin-bottom:60px;}
-        .intro-section.reverse{flex-direction:row-reverse;}
-        .intro-text{flex:1;}
-        .intro-text h3{font-size:24px;font-weight:600;margin-bottom:16px;color:var(--secondary);}
-        .intro-text p{font-size:15px;line-height:1.8;color:var(--text);}
-        .intro-img{flex:1;border-radius:12px;overflow:hidden;}
-        .intro-img img{width:100%;height:300px;object-fit:cover;}
-
-        .map-grid{
-            display:grid;grid-template-columns:repeat(3,1fr);gap:30px;
-        }
-        @media(max-width:992px){.map-grid{grid-template-columns:repeat(2,1fr);}}
-        @media(max-width:576px){.map-grid{grid-template-columns:1fr;}}
-        .map-card{
-            background:var(--light);border-radius:var(--radius);overflow:hidden;
-            box-shadow:var(--shadow);transition:var(--transition);
-        }
-        .map-cover{width:100%;height:240px;object-fit:cover;cursor:pointer;}
-        .map-info{padding:22px;}
-        .map-name{font-size:17px;font-weight:600;margin-bottom:10px;color:var(--secondary);}
-        .price-box{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
-        .original-price{font-size:18px;color:var(--text-light);text-decoration:line-through;}
-        .sale-price{font-size:22px;font-weight:700;color:var(--primary);}
-        .cny-price{font-size:18px;color:var(--text-light);}
-        .btn{
-            display:inline-flex;align-items:center;justify-content:center;
-            padding:12px 20px;border-radius:8px;font-weight:500;font-size:15px;
-            border:none;cursor:pointer;transition:var(--transition);width:100%;
-        }
-        .btn-primary{background:var(--primary);color:var(--light);}
-        .btn-primary:hover{background:#0E42D2;}
-        .btn-cancel{background:#E2E8F0;color:var(--text);}
-        .btn-cancel:hover{background:#d1d5db;}
-        .btn-success{background:var(--success);color:var(--light);}
-        .btn-danger{background:var(--danger);color:var(--light);}
-        .form-group{margin-bottom:22px;}
-        .form-label{display:block;font-weight:500;margin-bottom:10px;color:var(--secondary);}
-        .form-input{
-            width:100%;padding:14px 16px;border:1px solid #E2E8F0;
-            border-radius:8px;font-size:15px;transition:var(--transition);
-        }
-        .form-textarea{
-            width:100%;padding:14px 16px;border:1px solid #E2E8F0;
-            border-radius:8px;font-size:15px;min-height:120px;resize:vertical;
-        }
-        .form-input:focus,.form-textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(22,93,255,0.1);}
-        .login-box{
-            max-width:450px;margin:80px auto;
-            background:var(--light);padding:40px;border-radius:var(--radius);
-            box-shadow:var(--shadow);
-        }
-        .login-title{text-align:center;font-size:24px;font-weight:700;margin-bottom:30px;color:var(--secondary);}
-        .btn-row{display:flex;gap:12px;margin-top:10px;}
-
-        .modal{
-            position:fixed;top:0;left:0;width:100%;height:100%;
-            background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;z-index:9999;
-        }
-        .modal.active{display:flex;}
-        .modal-content{
-            background:var(--light);width:90%;max-width:900px;border-radius:var(--radius);
-            padding:0;overflow:hidden;max-height:90vh;overflow-y:auto;
-        }
-        .buy-container{display:grid;grid-template-columns:1fr 1fr;gap:0;}
-        .buy-left{padding:40px;}
-        .buy-right{padding:40px;background:#F8FAFC;display:flex;flex-direction:column;gap:16px;}
-        .slider{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding-bottom:10px;}
-        .slider img{width:100%;height:350px;object-fit:cover;border-radius:12px;flex-shrink:0;scroll-snap-align:center;}
-        .buy-name{font-size:24px;font-weight:700;margin-bottom:16px;color:var(--secondary);}
-        .buy-price{font-size:26px;font-weight:700;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
-        .buy-cny{font-size:20px;color:var(--text-light);}
-        .buy-desc{line-height:1.8;color:var(--text);font-size:15px;}
-        .buy-item{padding:16px;background:white;border-radius:8px;border:1px solid #E2E8F0;}
-        .buy-item label{font-size:14px;color:var(--text-light);margin-bottom:6px;display:block;}
-        .buy-item p,.buy-item input{font-size:15px;font-weight:500;color:var(--secondary);width:100%;}
-        .modal-close{position:absolute;top:20px;right:20px;width:36px;height:36px;
-            border-radius:50%;background:white;border:none;font-size:18px;cursor:pointer;z-index:10;}
-
-        .pay-modal .modal-content{max-width:500px;padding:35px;text-align:center;}
-        .pay-method-title{font-size:18px;margin-bottom:20px;color:var(--secondary);font-weight:600;}
-        .pay-methods{display:flex;flex-direction:column;gap:12px;margin-bottom:25px;}
-        .pay-method{
-            padding:14px 16px;border:1px solid #E2E8F0;border-radius:8px;
-            display:flex;align-items:center;gap:12px;cursor:pointer;
-        }
-        .pay-method i{font-size:22px;width:24px;text-align:center;}
-        .pay-method span{flex:1;text-align:left;font-weight:500;}
-        .qrcode-box{margin:20px 0;display:flex;justify-content:center;}
-        .qrcode-box img{max-width:220px;border-radius:10px;}
-        .pay-price{font-size:20px;font-weight:700;color:var(--primary);margin:15px 0;}
-        .pay-tip{padding:16px;background:#FFF7E6;border-radius:8px;color:#D97706;margin:20px 0;line-height:1.6;}
-        .agent-tip{padding:12px;background:#E6F7FF;border-radius:8px;color:#1890FF;margin:10px 0;font-weight:500;}
-
-        @media(max-width:768px){
-            .buy-container{grid-template-columns:1fr;}
-            .intro-section{flex-direction:column;gap:20px;}
-            .intro-section.reverse{flex-direction:column;}
-            .nav-menu{gap:16px;}
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="back-to-top" id="backToTop" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></div>
 
 <nav class="navbar">
     <div class="nav-container">
-        <a href="#" class="logo-area" onclick="showPage('home'); event.stopPropagation(); return false;">
-            <style>
-.header {
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-}
-.logo-img {
-    max-width: 60px;
-    max-height: 60px;
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-}
-
-</style>
-
-            <img src="D:\map\Logo.png" class="logo-img" alt="Map Studio Logo" >
-            <div>
-                <div class="logo-text">Map Studio</div>
-                <div class="site-desc">Professional Maps | Simple but not simplistic</div>
-            </div>
+        <a href="#" class="logo-area" onclick="showPage('home'); return false;">
+            <img src="IMG/Logo.png" class="logo-img" alt="Logo">
+            <div><div class="logo-text">Map Studio</div><div class="site-desc">Professional Maps</div></div>
         </a>
         <div class="nav-menu">
-            <a href="#" class="nav-link active" onclick="showPage('home'); event.stopPropagation(); return false;">Home</a>
-            <a href="#" class="nav-link" onclick="showPage('store'); event.stopPropagation(); return false;">Store</a>
-            <a href="#" class="nav-link" onclick="showPage('about'); event.stopPropagation(); return false;">About</a>
-            <a href="#" class="nav-link" onclick="showPage('contact'); event.stopPropagation(); return false;">Contact</a>
-            <a href="#" class="nav-link" onclick="showPage('login'); event.stopPropagation(); return false;">Login</a>
+            <a href="#" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i> Home</a>
+            <a href="#" class="nav-link" onclick="showPage('store')"><i class="fas fa-map"></i> Store</a>
+            <a href="#" class="nav-link" onclick="showPage('about')"><i class="fas fa-info-circle"></i> About</a>
+            <a href="#" class="nav-link" onclick="showPage('contact')"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="#" class="nav-link" onclick="showPage('login')"><i class="fas fa-user-shield"></i> Login</a>
         </div>
     </div>
 </nav>
-<div>
-    <iframe
-  width="100%"
-  height="700"
-  frameborder="0"
-  scrolling="no"
-  marginheight="0"
-  marginwidth="0"
-  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3814.473066413383!2d96.14424311486633!3d16.79674438843444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c1949df74dbd7f%3A0x3095821f316032b!2sYangon%2C%20Myanmar!5e0!3m2!1sen!2sus!4v1720000000000!5m2!1sen!2sus"
-  allowfullscreen=""
-  loading="lazy"
-  referrerpolicy="no-referrer-when-downgrade"
->
-</iframe>
-</div>
+
 <div class="container">
+    <!-- 首页：4张图片（新增第4张） -->
     <div id="home" class="page active">
-        <h1 class="page-title">Professional Digital Contour & Terrain Maps</h1>
-        <p class="section-desc">Map Studio provides high-precision, professionally produced digital contour maps, terrain maps and geographic data for commercial engineering projects, outdoor adventure planning, academic research, game development and landscape design. All map data is strictly sorted and updated every 6 months to ensure real-time performance and accuracy.</p>
+        <h1 class="page-title"><i class="fas fa-globe-asia"></i> Professional Digital Contour & Terrain Maps</h1>
+        <p class="section-desc">Map Studio provides high-precision maps for engineering, research, and design.</p>
         
         <div class="intro-section">
-            <div class="intro-text">
-                <h3>High-Precision Professional Data</h3>
-                <p>Each map is made by professional surveying and mapping teams, with clear contour lines, complete elevation data, standard file formats, and can be directly used for commercial projects and professional applications without secondary processing.</p>
-            </div>
-            <div class="intro-img">
-                <img src="D://Map/001 (18).jpg" alt="Contour Map Professional Data">
-            </div>
+            <div class="intro-text"><h3><i class="fas fa-chart-line"></i> High-Precision Data</h3><p>Professional surveying and mapping data.</p></div>
+            <div class="intro-img"><img src="" id="homeImg1" alt="Data"></div>
         </div>
-
         <div class="intro-section reverse">
-            <div class="intro-text">
-                <h3>Wide Range of Application Scenarios</h3>
-                <p>Our maps are suitable for engineering construction, geographic research, outdoor route planning, film and television game production, urban planning and other fields, and support secondary development and personalized customization.</p>
-            </div>
-            <div class="intro-img">
-                <img src="D://Map/001 (29).jpg" alt="Map Application Scenarios">
-            </div>
+            <div class="intro-text"><h3><i class="fas fa-layer-group"></i> Application Scenarios</h3><p>Wide range of industry applications.</p></div>
+            <div class="intro-img"><img src="" id="homeImg2" alt="Scenario"></div>
         </div>
-
         <div class="intro-section">
-            <div class="intro-text">
-                <h3>Stable Update & Perfect After-Sales</h3>
-                <p>All map products are updated every 6 months. After purchase, we will send the download link and extraction code to your reserved email within 1 hour, providing you with stable and reliable after-sales service.</p>
-            </div>
-            <div class="intro-img">
-                <img src="D://Map/001 (12).jpg" alt="Map Update Service">
-            </div>
+            <div class="intro-text"><h3><i class="fas fa-sync-alt"></i> Stable Updates</h3><p>Regular data updates and after-sales support.</p></div>
+            <div class="intro-img"><img src="" id="homeImg3" alt="Service"></div>
+        </div>
+        <!-- 新增第4张首页图片 -->
+        <div class="intro-section reverse">
+            <div class="intro-text"><h3><i class="fas fa-file-export"></i> Multi-Format Support</h3><p>Support SHAPE, DXF, TIFF, PNG, SVG and CAD formats.</p></div>
+            <div class="intro-img"><img src="" id="homeImg4" alt="Format"></div>
         </div>
     </div>
 
-    <div id="store" class="page">
-        <h2 class="page-title">Map Store</h2>
-        <div class="map-grid" id="mapGrid"></div>
-    </div>
-
-    <div id="about" class="page">
-        <h2 class="page-title">About Map Studio</h2>
-        <div class="card">
-            <p>Map Studio is a professional digital map service provider focusing on high-precision contour maps, terrain maps and geographic data production. We have a professional mapping team and rich data resources, committed to providing stable, reliable, easy-to-use high-quality map resources for users around the world.</p>
-            <br>
-            <p>We always adhere to the principle of quality first, update all map data every 6 months, and continuously optimize product details to meet the needs of different users in various industries.</p>
-        </div>
-    </div>
-
-    <div id="contact" class="page">
-        <h2 class="page-title">Contact & Support</h2>
-        <div class="card">
-            <p>If you have any questions about map products, payment, download or after-sales service, please feel free to contact us.</p>
-            <br>
-            <p><strong>Email:</strong> support@mapstudio.com</p>
-            <p><strong>Working Hours:</strong> Monday - Friday 9:00 - 18:00 (GMT+8)</p>
-            <p><strong>Service:</strong> Reply to emails within 24 hours, and solve after-sales problems as soon as possible</p>
-        </div>
-    </div>
+    <div id="store" class="page"><h2 class="page-title"><i class="fas fa-map"></i> Map Store</h2><div class="map-grid" id="mapGrid"></div></div>
+    <div id="about" class="page"><h2 class="page-title"><i class="fas fa-info-circle"></i> About</h2><div class="card"><p>Map Studio is a professional map data provider.</p></div></div>
+    <div id="contact" class="page"><h2 class="page-title"><i class="fas fa-headset"></i> Contact</h2><div class="card"><p>Email: support@mapstudio.com</p></div></div>
 
     <div id="login" class="page">
         <div class="login-box">
-            <h2 class="login-title">Admin Login</h2>
-            <div class="form-group">
-                <label class="form-label">Admin Username</label>
-                <input type="text" id="username" class="form-input" placeholder="Please enter admin username">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Admin Password</label>
-                <input type="password" id="password" class="form-input" placeholder="Please enter admin password">
-            </div>
-            <div class="btn-row">
-                <button class="btn btn-primary" onclick="adminLogin()">Login</button>
-                <button class="btn btn-cancel" onclick="showPage('home')">Cancel</button>
-            </div>
+            <h2 class="login-title"><i class="fas fa-user-lock"></i> Admin Login</h2>
+            <div class="form-group"><label class="form-label">Username</label><input type="text" id="username" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Password</label><input type="password" id="password" class="form-input"></div>
+            <div class="btn-row"><button class="btn btn-primary" onclick="adminLogin()">Login</button><button class="btn btn-cancel" onclick="showPage('home')">Cancel</button></div>
         </div>
     </div>
 
     <div id="admin" class="page">
-        <h2 class="page-title">Admin Management Center</h2>
-        
+        <h2 class="page-title"><i class="fas fa-user-cog"></i> Admin Center</h2>
         <div class="admin-tabs">
-            <div class="admin-tab active" onclick="switchAdminPanel('mapPanel')">Map Examples (6)</div>
-            <div class="admin-tab" onclick="switchAdminPanel('qrPanel')">Payment QR Codes</div>
-            <div class="admin-tab" onclick="switchAdminPanel('accountPanel')">Account Management</div>
+            <div class="admin-tab active" onclick="switchAdminPanel('goodsPanel')">Products Manage</div>
+            <div class="admin-tab" onclick="switchAdminPanel('homePanel')">Home Images</div>
+            <div class="admin-tab" onclick="switchAdminPanel('payPanel')">Payment QR</div>
+            <div class="admin-tab" onclick="switchAdminPanel('accountPanel')">Account</div>
         </div>
 
-        <div id="mapPanel" class="admin-panel active">
+        <div id="goodsPanel" class="admin-panel active"><div class="card" id="adminGoodsContainer"></div></div>
+        <!-- 后台Home：4个上传位（对应前台4张图） -->
+        <div id="homePanel" class="admin-panel">
             <div class="card">
-                <h3 class="card-title"><i class="fas fa-map-marked-alt"></i> Example 1 - Topographic Contour Map</h3>
-                <div class="form-group">
-                    <label class="form-label">Map Name</label>
-                    <input type="text" id="m1_name" class="form-input" placeholder="Enter map full name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Price (USD)</label>
-                    <input type="number" id="m1_price" class="form-input" value="1999" min="1">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Description</label>
-                    <textarea id="m1_desc" class="form-textarea" placeholder="Enter detailed map description, features, usage, etc."></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Store Cover Image (Front Show 1 Image)</label>
-                    <input type="file" id="m1_cover" class="form-input" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Buy Page Slider Images (Multiple)</label>
-                    <input type="file" id="m1_slider" class="form-input" accept="image/*" multiple>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Source File</label>
-                    <input type="file" id="m1_file" class="form-input">
-                </div>
-                <button class="btn btn-primary" onclick="saveExample(1)">Save & Replace Example 1</button>
-            </div>
-
-            <div class="card">
-                <h3 class="card-title"><i class="fas fa-mountain"></i> Example 2 - Mountain Terrain Map</h3>
-                <div class="form-group">
-                    <label class="form-label">Map Name</label>
-                    <input type="text" id="m2_name" class="form-input" placeholder="Enter map full name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Price (USD)</label>
-                    <input type="number" id="m2_price" class="form-input" value="1999" min="1">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Description</label>
-                    <textarea id="m2_desc" class="form-textarea" placeholder="Enter detailed map description, features, usage, etc."></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Store Cover Image (Front Show 1 Image)</label>
-                    <input type="file" id="m2_cover" class="form-input" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Buy Page Slider Images (Multiple)</label>
-                    <input type="file" id="m2_slider" class="form-input" accept="image/*" multiple>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Source File</label>
-                    <input type="file" id="m2_file" class="form-input">
-                </div>
-                <button class="btn btn-primary" onclick="saveExample(2)">Save & Replace Example 2</button>
-            </div>
-
-            <div class="card">
-                <h3 class="card-title"><i class="fas fa-globe-asia"></i> Example 3 - Geographic Contour Set</h3>
-                <div class="form-group">
-                    <label class="form-label">Map Name</label>
-                    <input type="text" id="m3_name" class="form-input" placeholder="Enter map full name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Price (USD)</label>
-                    <input type="number" id="m3_price" class="form-input" value="1999" min="1">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Description</label>
-                    <textarea id="m3_desc" class="form-textarea" placeholder="Enter detailed map description, features, usage, etc."></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Store Cover Image (Front Show 1 Image)</label>
-                    <input type="file" id="m3_cover" class="form-input" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Buy Page Slider Images (Multiple)</label>
-                    <input type="file" id="m3_slider" class="form-input" accept="image/*" multiple>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Source File</label>
-                    <input type="file" id="m3_file" class="form-input">
-                </div>
-                <button class="btn btn-primary" onclick="saveExample(3)">Save & Replace Example 3</button>
-            </div>
-
-            <div class="card">
-                <h3 class="card-title"><i class="fas fa-ruler-combined"></i> Example 4 - High Precision Map</h3>
-                <div class="form-group">
-                    <label class="form-label">Map Name</label>
-                    <input type="text" id="m4_name" class="form-input" placeholder="Enter map full name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Price (USD)</label>
-                    <input type="number" id="m4_price" class="form-input" value="1999" min="1">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Description</label>
-                    <textarea id="m4_desc" class="form-textarea" placeholder="Enter detailed map description, features, usage, etc."></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Store Cover Image (Front Show 1 Image)</label>
-                    <input type="file" id="m4_cover" class="form-input" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Buy Page Slider Images (Multiple)</label>
-                    <input type="file" id="m4_slider" class="form-input" accept="image/*" multiple>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Source File</label>
-                    <input type="file" id="m4_file" class="form-input">
-                </div>
-                <button class="btn btn-primary" onclick="saveExample(4)">Save & Replace Example 4</button>
-            </div>
-
-            <div class="card">
-                <h3 class="card-title"><i class="fas fa-hiking"></i> Example 5 - Outdoor Adventure Map</h3>
-                <div class="form-group">
-                    <label class="form-label">Map Name</label>
-                    <input type="text" id="m5_name" class="form-input" placeholder="Enter map full name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Price (USD)</label>
-                    <input type="number" id="m5_price" class="form-input" value="1999" min="1">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Description</label>
-                    <textarea id="m5_desc" class="form-textarea" placeholder="Enter detailed map description, features, usage, etc."></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Store Cover Image (Front Show 1 Image)</label>
-                    <input type="file" id="m5_cover" class="form-input" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Buy Page Slider Images (Multiple)</label>
-                    <input type="file" id="m5_slider" class="form-input" accept="image/*" multiple>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Source File</label>
-                    <input type="file" id="m5_file" class="form-input">
-                </div>
-                <button class="btn btn-primary" onclick="saveExample(5)">Save & Replace Example 5</button>
-            </div>
-
-            <div class="card">
-                <h3 class="card-title"><i class="fas fa-building"></i> Example 6 - Engineering Design Map</h3>
-                <div class="form-group">
-                    <label class="form-label">Map Name</label>
-                    <input type="text" id="m6_name" class="form-input" placeholder="Enter map full name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Price (USD)</label>
-                    <input type="number" id="m6_price" class="form-input" value="1999" min="1">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Description</label>
-                    <textarea id="m6_desc" class="form-textarea" placeholder="Enter detailed map description, features, usage, etc."></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Store Cover Image (Front Show 1 Image)</label>
-                    <input type="file" id="m6_cover" class="form-input" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Buy Page Slider Images (Multiple)</label>
-                    <input type="file" id="m6_slider" class="form-input" accept="image/*" multiple>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Map Source File</label>
-                    <input type="file" id="m6_file" class="form-input">
-                </div>
-                <button class="btn btn-primary" onclick="saveExample(6)">Save & Replace Example 6</button>
+                <h3 class="card-title">Home Page 4 Images (Frontend 1:1 Matching)</h3>
+                <div class="form-group"><label>Image 1</label><input type="file" class="form-input home-img-upload" data-key="home1" accept="image/*"></div>
+                <div class="form-group"><label>Image 2</label><input type="file" class="form-input home-img-upload" data-key="home2" accept="image/*"></div>
+                <div class="form-group"><label>Image 3</label><input type="file" class="form-input home-img-upload" data-key="home3" accept="image/*"></div>
+                <div class="form-group"><label>Image 4 (New)</label><input type="file" class="form-input home-img-upload" data-key="home4" accept="image/*"></div>
+                <button class="btn btn-primary" onclick="saveHomeImages()">Save All 4 Images</button>
             </div>
         </div>
-
-        <div id="qrPanel" class="admin-panel">
+        <div id="payPanel" class="admin-panel">
             <div class="card">
-                <h3 class="card-title"><i class="fas fa-qrcode"></i> Payment QR Codes Settings</h3>
-                <div class="form-group">
-                    <label class="form-label">WeChat Pay QR Code (Local Upload)</label>
-                    <input type="file" id="wechat_qr" class="form-input" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Alipay QR Code (Local Upload)</label>
-                    <input type="file" id="alipay_qr" class="form-input" accept="image/*">
-                </div>
-                <button class="btn btn-success" onclick="saveQR()">Save Payment QR Codes</button>
+                <h3 class="card-title">Payment QR Codes</h3>
+                <div class="form-group"><label>WeChat Pay</label><input type="file" id="wechat_qr" class="form-input" accept="image/*"></div>
+                <div class="form-group"><label>Alipay</label><input type="file" id="alipay_qr" class="form-input" accept="image/*"></div>
+                <div class="form-group"><label>PayPal</label><input type="file" id="paypal_qr" class="form-input" accept="image/*"></div>
+                <button class="btn btn-primary" onclick="savePayImages()">Save QR Codes</button>
             </div>
         </div>
-
         <div id="accountPanel" class="admin-panel">
-            <div class="card" style="max-width:400px;">
-                <h3 class="card-title"><i class="fas fa-user-cog"></i> Admin Account</h3>
-                <button class="btn btn-danger" onclick="logout()">Logout & Return Home</button>
+            <div class="card">
+                <h3 class="card-title">Change Password</h3>
+                <div class="form-group"><label>New Password</label><input type="password" id="new_password" class="form-input"></div>
+                <div class="form-group"><label>Confirm Password</label><input type="password" id="confirm_password" class="form-input"></div>
+                <button class="btn btn-primary" onclick="changePassword()">Update</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal" id="buyModal">
-    <button class="modal-close" onclick="closeBuyModal()">×</button>
-    <div class="modal-content">
-        <div class="buy-container">
-            <div class="buy-left">
-                <div class="slider" id="slider"></div>
-                <h3 id="buyName"></h3>
-                <div class="buy-price">
-                    <span id="buyUsd"></span>
-                    <span id="buyCny" class="buy-cny"></span>
-                </div>
-                <div id="buyDesc"></div>
-            </div>
-            <div class="buy-right">
-                <div class="buy-item">
-                    <label>Map Name</label>
-                    <p id="buyMapName"></p>
-                </div>
-                <div class="buy-item">
-                    <label>Update Cycle</label>
-                    <p>Data Updated Every 6 Months</p>
-                </div>
-                <div class="buy-item">
-                    <label>Your Receive Email</label>
-                    <input type="email" id="userEmail" placeholder="Please enter valid email to receive download link">
-                </div>
-                <div class="btn-row">
-                    <button class="btn btn-primary" onclick="toPay()">Confirm Purchase</button>
-                    <button class="btn btn-cancel" onclick="closeBuyModal()">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- 弹窗 -->
+<div class="image-preview-modal" id="imagePreviewModal"><div class="preview-content"><button class="preview-close" onclick="closeImagePreview()">&times;</button><button class="preview-nav preview-prev" onclick="navigatePreview(-1)"><i class="fas fa-chevron-left"></i></button><img src="" class="preview-image" id="previewMainImage"><button class="preview-nav preview-next" onclick="navigatePreview(1)"><i class="fas fa-chevron-right"></i></button><div class="preview-counter" id="previewCounter"></div></div></div>
+<div class="modal" id="buyModal"><div class="modal-content"><button class="modal-close" onclick="closeBuyModal()">&times;</button><div class="buy-container"><div class="buy-left"><div class="slider" id="buySlider"></div><h3 class="buy-name" id="buyName"></h3><div class="buy-price"><span id="buyPrice"></span><span class="buy-cny" id="buyCny"></span></div><p class="buy-desc" id="buyDesc"></p></div><div class="buy-right"><div class="buy-item"><label>Map Name</label><p id="orderMapName"></p></div><div class="buy-item"><label>Updated</label><p id="updateDate"></p></div><div class="buy-item"><label>Email</label><input type="email" id="buyerEmail" class="form-input" placeholder="Your receive email"></div><button class="btn btn-primary" onclick="openPayModal()" style="margin-top:10px;">Proceed To Pay</button></div></div></div></div>
+<div class="modal pay-modal" id="payModal"><div class="modal-content"><button class="modal-close" onclick="closePayModal()">&times;</button><h3 class="pay-method-title">Select Payment Method</h3><div class="pay-methods"><div class="pay-method" onclick="selectPayment('wechat')"><i class="fab fa-weixin"></i>WeChat Pay</div><div class="pay-method" onclick="selectPayment('alipay')"><i class="fab fa-alipay"></i>Alipay</div><div class="pay-method" onclick="selectPayment('paypal')"><i class="fab fa-paypal"></i>PayPal</div></div><div class="qrcode-box" id="paymentQRCode"><img src="" alt="QR Code"></div><div class="pay-price" id="payPrice"></div><button class="btn btn-primary" onclick="confirmPayment()">Confirm Payment</button></div></div>
 
-<div class="modal pay-modal" id="payModal">
-    <div class="modal-content">
-        <h3 class="modal-title">Complete Your Payment</h3>
-        <div class="agent-tip">中国地区代理</div>
-        <div class="pay-method-title">Please Select Payment Method</div>
-        <div class="pay-methods">
-            <div class="pay-method" onclick="selectCredit()">
-                <i class="fas fa-credit-card" style="color:#0070BA;"></i>
-                <span>Credit Card</span>
-            </div>
-            <div class="pay-method" onclick="selectWechat()">
-                <i class="fab fa-weixin" style="color:#07C160;"></i>
-                <span>WeChat Pay</span>
-            </div>
-            <div class="pay-method" onclick="selectAlipay()">
-                <i class="fab fa-alipay" style="color:#1677FF;"></i>
-                <span>Alipay</span>
-            </div>
-        </div>
-        <div class="qrcode-box" id="qrcodeBox" style="display:none;"></div>
-        <div class="pay-price" id="payPrice" style="display:none;"></div>
-        <div class="pay-tip" id="payTip" style="display:none;">After successful payment, the download link and password will be sent to your email within 1 hour, please pay attention to check</div>
-        <div id="creditTip" style="display:none;color:var(--danger);font-weight:500;">Credit Card payment is temporarily unavailable</div>
-        <button class="btn btn-cancel" onclick="closePayModal()">Cancel</button>
-    </div>
-</div>
-
-<script>
-const MAP_STORE = "MAP_EXAMPLES_6";
-const QR_STORE = "PAY_QR_CODES";
-const ADMIN_LOGIN = "ADMIN_STATUS";
-const EXCHANGE_RATE = 7.2;
-let currentMapIndex = null;
-
-function showPage(id) {
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-    document.querySelectorAll(".nav-link").forEach(n => n.classList.remove("active"));
-    const target = document.querySelector(`.nav-link[onclick*="${id}"]`);
-    if(target) target.classList.add("active");
-}
-
-function switchAdminPanel(panelId) {
-    document.querySelectorAll(".admin-panel").forEach(p => p.classList.remove("active"));
-    document.querySelectorAll(".admin-tab").forEach(t => t.classList.remove("active"));
-    document.getElementById(panelId).classList.add("active");
-    if(event && event.target) event.target.classList.add("active");
-}
-
-function usdToCny(usd) { return Math.round(usd * EXCHANGE_RATE); }
-
-function initDefaultMaps() {
-    if(localStorage.getItem(MAP_STORE)) return;
-    const defaultMaps = [
-        {name:"Topographic Contour Map V1",price:1999,desc:"Professional high-precision topographic contour map, complete elevation data, clear contour lines, suitable for geographic research and engineering design, updated every 6 months",cover:"https://picsum.photos/id/1041/600/400",slider:["https://picsum.photos/id/1041/600/400","https://picsum.photos/id/1042/600/400"],file:"#"},
-        {name:"Mountain Terrain Contour Map",price:1999,desc:"Professional mountain terrain contour map, complete topographic data, suitable for outdoor adventure planning and geographic analysis, with high-precision marking",cover:"https://picsum.photos/id/1048/600/400",slider:["https://picsum.photos/id/1048/600/400"],file:"#"},
-        {name:"Geographic Contour Map Set",price:1999,desc:"Full region geographic contour map set, standardized data format, covering multiple geographic areas, easy to use and secondary development",cover:"https://picsum.photos/id/1051/600/400",slider:["https://picsum.photos/id/1051/600/400"],file:"#"},
-        {name:"Ultra High Precision Map",price:1999,desc:"Professional grade ultra-high precision contour map, suitable for commercial engineering projects, academic research and industrial application scenarios",cover:"https://picsum.photos/id/1060/600/400",slider:["https://picsum.photos/id/1060/600/400"],file:"#"},
-        {name:"Outdoor Adventure Route Map",price:1999,desc:"Professional outdoor adventure map, complete road and terrain information, safe and reliable, suitable for outdoor travel and expedition planning",cover:"https://picsum.photos/id/1063/600/400",slider:["https://picsum.photos/id/1063/600/400"],file:"#"},
-        {name:"Engineering Construction Design Map",price:1999,desc:"Special map for engineering construction design, accurate geographic data, clear contour markers, to meet the needs of engineering projects",cover:"https://picsum.photos/id/1066/600/400",slider:["https://picsum.photos/id/1066/600/400"],file:"#"}
-    ];
-    localStorage.setItem(MAP_STORE, JSON.stringify(defaultMaps));
-}
-
-function renderStore() {
-    const maps = JSON.parse(localStorage.getItem(MAP_STORE)) || [];
-    let html = "";
-    maps.forEach((item, index) => {
-        const cny = usdToCny(item.price);
-        html += `
-        <div class="map-card">
-            <img src="${item.cover}" class="map-cover" onclick="openBuyModal(${index}); event.stopPropagation();">
-            <div class="map-info">
-                <div class="map-name">${item.name}</div>
-                <div class="price-box">
-                    <span class="sale-price">$${item.price} / ¥${cny}</span>
-                </div>
-                <button class="btn btn-primary" onclick="openBuyModal(${index}); event.stopPropagation();">Buy Now</button>
-            </div>
-        </div>`;
-    });
-    document.getElementById("mapGrid").innerHTML = html;
-}
-
-function saveExample(num) {
-    const maps = JSON.parse(localStorage.getItem(MAP_STORE)) || [];
-    const name = document.getElementById(`m${num}_name`).value.trim();
-    const price = document.getElementById(`m${num}_price`).value * 1;
-    const desc = document.getElementById(`m${num}_desc`).value.trim();
-    const cover = document.getElementById(`m${num}_cover`).files[0];
-    const sliderFiles = document.getElementById(`m${num}_slider`).files;
-    const mapFile = document.getElementById(`m${num}_file`).files[0];
-
-    if(!name || !price || !desc || !cover || sliderFiles.length < 1 || !mapFile) {
-        alert("Please fill in all information and upload local files!");
-        return;
-    }
-
-    const coverUrl = URL.createObjectURL(cover);
-    const sliderUrls = Array.from(sliderFiles).map(file => URL.createObjectURL(file));
-    const fileUrl = URL.createObjectURL(mapFile);
-
-    maps[num-1] = { name, price, desc, cover:coverUrl, slider:sliderUrls, file:fileUrl };
-    localStorage.setItem(MAP_STORE, JSON.stringify(maps));
-    alert(`Example ${num} saved and replaced successfully!`);
-    renderStore();
-}
-
-function saveQR() {
-    const wechatFile = document.getElementById("wechat_qr").files[0];
-    const alipayFile = document.getElementById("alipay_qr").files[0];
-    if(!wechatFile && !alipayFile) {
-        alert("Please upload at least one payment QR code!");
-        return;
-    }
-    const qrData = {};
-    if(wechatFile) qrData.wechat = URL.createObjectURL(wechatFile);
-    if(alipayFile) qrData.alipay = URL.createObjectURL(alipayFile);
-    localStorage.setItem(QR_STORE, JSON.stringify(qrData));
-    alert("Payment QR codes saved successfully!");
-}
-
-function adminLogin() {
-    const user = document.getElementById("username").value.trim();
-    const pwd = document.getElementById("password").value.trim();
-    if(user === "001" && pwd === "002") {
-        localStorage.setItem(ADMIN_LOGIN, "true");
-        showPage("admin");
-        alert("Login successful!");
-    } else {
-        alert("Username or password error!");
-    }
-}
-
-function logout() {
-    localStorage.removeItem(ADMIN_LOGIN);
-    showPage("home");
-    alert("Logged out successfully!");
-}
-
-function checkAdmin() {
-    if(!localStorage.getItem(ADMIN_LOGIN) && document.getElementById("admin").classList.contains("active")) {
-        showPage("login");
-    }
-}
-
-function openBuyModal(index) {
-    currentMapIndex = index;
-    const maps = JSON.parse(localStorage.getItem(MAP_STORE)) || [];
-    const item = maps[index];
-    const sliderHtml = item.slider.map(img => `<img src="${img}">`).join("");
-    document.getElementById("slider").innerHTML = sliderHtml;
-    document.getElementById("buyName").innerText = item.name;
-    document.getElementById("buyUsd").innerText = `$${item.price}`;
-    document.getElementById("buyCny").innerText = `¥${usdToCny(item.price)}`;
-    document.getElementById("buyDesc").innerText = item.desc;
-    document.getElementById("buyMapName").innerText = item.name;
-    document.getElementById("userEmail").value = "";
-    document.getElementById("buyModal").classList.add("active");
-}
-
-function toPay() {
-    const email = document.getElementById("userEmail").value.trim();
-    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!emailReg.test(email)) {
-        alert("Please enter a valid email address!");
-        return;
-    }
-    closeBuyModal();
-    const maps = JSON.parse(localStorage.getItem(MAP_STORE)) || [];
-    const item = maps[currentMapIndex];
-    document.getElementById("payPrice").innerText = `$${item.price} / ¥${usdToCny(item.price)}`;
-    document.getElementById("qrcodeBox").style.display = "none";
-    document.getElementById("payPrice").style.display = "none";
-    document.getElementById("payTip").style.display = "none";
-    document.getElementById("creditTip").style.display = "none";
-    document.getElementById("payModal").classList.add("active");
-}
-
-function selectCredit() {
-    document.getElementById("qrcodeBox").style.display = "none";
-    document.getElementById("payPrice").style.display = "none";
-    document.getElementById("payTip").style.display = "none";
-    document.getElementById("creditTip").style.display = "block";
-}
-function selectWechat() {
-    const qr = JSON.parse(localStorage.getItem(QR_STORE)) || {};
-    document.getElementById("qrcodeBox").innerHTML = `<img src="${qr.wechat || ''}">`;
-    document.getElementById("creditTip").style.display = "none";
-    document.getElementById("qrcodeBox").style.display = "flex";
-    document.getElementById("payPrice").style.display = "block";
-    document.getElementById("payTip").style.display = "block";
-}
-function selectAlipay() {
-    const qr = JSON.parse(localStorage.getItem(QR_STORE)) || {};
-    document.getElementById("qrcodeBox").innerHTML = `<img src="${qr.alipay || ''}">`;
-    document.getElementById("creditTip").style.display = "none";
-    document.getElementById("qrcodeBox").style.display = "flex";
-    document.getElementById("payPrice").style.display = "block";
-    document.getElementById("payTip").style.display = "block";
-}
-
-function closeBuyModal() { document.getElementById("buyModal").classList.remove("active"); }
-function closePayModal() { document.getElementById("payModal").classList.remove("active"); }
-
-document.addEventListener("DOMContentLoaded", function() {
-    initDefaultMaps();
-    renderStore();
-    checkAdmin();
-});
-</script>
+<script src="script.js"></script>
 </body>
 </html>
