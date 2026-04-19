@@ -25,6 +25,8 @@
             --radius: 14px;
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             --transition: all 0.4s ease;
+            --danger: #F53F3F;
+            --disabled: #94A3B8;
         }
 
         body {
@@ -589,6 +591,16 @@
             display: block;
         }
 
+        .important-note {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
         .modal-close {
             position: absolute;
             top: 20px;
@@ -601,12 +613,15 @@
             font-size: 18px;
             cursor: pointer;
             z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .pay-modal .modal-content {
             max-width: 500px;
             padding: 35px;
-            text-align: left;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-radius: 16px;
         }
 
         .pay-method-title {
@@ -614,7 +629,7 @@
             margin-bottom: 20px;
             color: var(--secondary);
             font-weight: 600;
-            text-align: left;
+            text-align: center;
         }
 
         .pay-methods {
@@ -622,6 +637,7 @@
             flex-direction: column;
             gap: 12px;
             margin-bottom: 25px;
+            text-align: left;
         }
 
         .pay-method {
@@ -632,12 +648,36 @@
             align-items: center;
             gap: 12px;
             cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .pay-method:hover {
+            border-color: var(--primary);
+            background-color: rgba(22,93,255,0.02);
+        }
+
+        .pay-method.disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            background-color: #F1F5F9;
+        }
+
+        .pay-method.disabled:hover {
+            border-color: #E2E8F0;
+            background-color: #F1F5F9;
         }
 
         .pay-method i {
             font-size: 22px;
             width: 24px;
             text-align: center;
+        }
+
+        .paypal-note {
+            font-size: 12px;
+            color: var(--danger);
+            margin-left: 8px;
+            font-weight: 500;
         }
 
         .qrcode-box {
@@ -649,6 +689,7 @@
         .qrcode-box img {
             max-width: 220px;
             border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .pay-price {
@@ -656,7 +697,16 @@
             font-weight: 700;
             color: var(--primary);
             margin: 15px 0;
-            text-align: left;
+            text-align: center;
+        }
+
+        .pay-modal .btn-primary {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            display: block;
+            padding: 14px 20px;
+            font-size: 16px;
         }
 
         .float-buttons {
@@ -691,18 +741,19 @@
             visibility: visible;
         }
 
-        /* 谷歌地图 - 仅首页显示 + 高度增加2/3 */
         .google-map-wrapper {
             display: none;
             width: 100%;
             height: 700px;
             border: none;
+            border-radius: var(--radius);
+            margin: 20px 0;
+            box-shadow: var(--shadow);
         }
         .google-map-wrapper.show {
             display: block;
         }
 
-        /* 首页图文交叉布局 */
         .home-section {
             padding: 50px 0;
         }
@@ -767,12 +818,15 @@
             .map-grid { grid-template-columns: 1fr; }
             .buy-container { grid-template-columns: 1fr; }
             .google-map-wrapper { height: 450px; }
+            
+            .pay-modal .modal-content {
+                padding: 25px 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- 浮动按钮 -->
 <div class="float-buttons">
     <div class="float-btn" id="backToTop" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></div>
     <div class="float-btn" id="goToBottom" onclick="scrollToBottom()"><i class="fas fa-arrow-down"></i></div>
@@ -780,7 +834,7 @@
 
 <nav class="navbar">
     <div class="nav-container">
-        <a href="#" class="logo-area" onclick="showPage('home'); return false;">
+        <a href="javascript:;" class="logo-area" onclick="showPage('home')">
             <img src="/00/IMG/Logo.png" class="logo-img" alt="Logo">
             <div>
                 <div class="logo-text">Mite Map</div>
@@ -788,25 +842,22 @@
             </div>
         </a>
         <div class="nav-menu">
-            <a href="#" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i> Home</a>
-            <a href="#" class="nav-link" onclick="showPage('store')"><i class="fas fa-map"></i> Store</a>
-            <a href="#" class="nav-link" onclick="showPage('about')"><i class="fas fa-info-circle"></i> About</a>
-            <a href="#" class="nav-link" onclick="showPage('contact')"><i class="fas fa-envelope"></i> Contact</a>
-            <a href="#" class="nav-link" onclick="showPage('login')"><i class="fas fa-user-shield"></i> Login</a>
+            <a href="javascript:;" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i> Home</a>
+            <a href="javascript:;" class="nav-link" onclick="showPage('store')"><i class="fas fa-map"></i> Store</a>
+            <a href="javascript:;" class="nav-link" onclick="showPage('about')"><i class="fas fa-info-circle"></i> About</a>
+            <a href="javascript:;" class="nav-link" onclick="showPage('contact')"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="javascript:;" class="nav-link" onclick="showPage('login')"><i class="fas fa-user-shield"></i> Login</a>
         </div>
     </div>
 </nav>
 
-<!-- 谷歌地图：仅首页菜单栏下方显示 -->
 <iframe class="google-map-wrapper" id="homeMap"
 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d102320.58870285772!2d-122.46881834589845!3d37.79041159313103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085805f6e07975b%3A0x5966c51d21166d14!2sSan%20Francisco%2C%20CA%2C%20USA!5e0!3m2!1sen!2sgb!4v1716465002211!5m2!1sen!2sgb"
 allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
 <div class="container">
-    <!-- 首页：5组图文交叉展示 -->
     <div id="home" class="page active">
         <div class="home-section">
-            <!-- 1 -->
             <div class="home-row">
                 <div class="home-col">
                     <img src="/00/IMG/001 (13).jpg" class="home-img" style="animation-delay: 0.1s">
@@ -817,8 +868,6 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
                     <p>Our maps support 1-meter elevation accuracy, clear contour lines, slope analysis, hydrological models, and vegetation distribution, fully meeting professional project requirements.</p>
                 </div>
             </div>
-
-            <!-- 2 -->
             <div class="home-row reverse">
                 <div class="home-col">
                     <img src="/00/IMG/001 (12).jpg" class="home-img" style="animation-delay: 0.2s">
@@ -829,8 +878,6 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
                     <p>We provide long-term data updates to ensure your project always uses the latest geographic information.</p>
                 </div>
             </div>
-
-            <!-- 3 -->
             <div class="home-row">
                 <div class="home-col">
                     <img src="/00/IMG/001 (27).jpg" class="home-img" style="animation-delay: 0.3s">
@@ -841,8 +888,6 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
                     <p>Our professional support team is ready to help you with data usage and format conversion.</p>
                 </div>
             </div>
-
-            <!-- 4 -->
             <div class="home-row reverse">
                 <div class="home-col">
                     <img src="/00/IMG/001 (29).jpg" class="home-img" style="animation-delay: 0.4s">
@@ -853,8 +898,6 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
                     <p>All functions are designed for professional users, making your project planning and design more efficient and accurate.</p>
                 </div>
             </div>
-
-            <!-- 5 -->
             <div class="home-row">
                 <div class="home-col">
                     <img src="/00/IMG/001 (9).jpg" class="home-img" style="animation-delay: 0.5s">
@@ -868,13 +911,11 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
         </div>
     </div>
 
-    <!-- 商店 -->
     <div id="store" class="page">
         <h2 class="page-title"><i class="fas fa-map"></i> Map Store</h2>
         <div class="map-grid" id="mapGrid"></div>
     </div>
 
-    <!-- 关于 -->
     <div id="about" class="page">
         <h2 class="page-title"><i class="fas fa-info-circle"></i> About</h2>
         <div class="card">
@@ -882,7 +923,6 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
         </div>
     </div>
 
-    <!-- 联系 -->
     <div id="contact" class="page">
         <h2 class="page-title"><i class="fas fa-headset"></i> Contact</h2>
         <div class="card">
@@ -893,7 +933,6 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
         </div>
     </div>
 
-    <!-- 登录 -->
     <div id="login" class="page">
         <div class="login-box">
             <h2 class="login-title"><i class="fas fa-user-lock"></i> Admin Login</h2>
@@ -912,7 +951,6 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
         </div>
     </div>
 
-    <!-- 后台 -->
     <div id="admin" class="page">
         <h2 class="page-title"><i class="fas fa-user-cog"></i> Admin Center</h2>
         <div class="admin-tabs">
@@ -963,7 +1001,6 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
     </div>
 </div>
 
-<!-- 弹窗 -->
 <div class="image-preview-modal" id="imagePreviewModal">
     <div class="preview-content">
         <button class="preview-close" onclick="closeImagePreview()">&times;</button>
@@ -999,6 +1036,9 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
                 <div class="buy-item">
                     <label>Email</label>
                     <input type="email" id="buyerEmail" class="form-input" placeholder="Your receive email">
+                    <div class="important-note">
+                        <i class="fas fa-exclamation-circle"></i> Note: Please enter a valid email address, the download link will be sent to this address
+                    </div>
                 </div>
                 <button class="btn btn-primary" onclick="openPayModal()" style="margin-top:10px;">Proceed To Pay</button>
             </div>
@@ -1013,7 +1053,10 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
         <div class="pay-methods">
             <div class="pay-method" onclick="selectPayment('wechat')"><i class="fab fa-weixin"></i>WeChat Pay</div>
             <div class="pay-method" onclick="selectPayment('alipay')"><i class="fab fa-alipay"></i>Alipay</div>
-            <div class="pay-method" onclick="selectPayment('paypal')"><i class="fab fa-paypal"></i>PayPal</div>
+            <div class="pay-method disabled">
+                <i class="fab fa-paypal"></i>PayPal
+                <span class="paypal-note">It has been detected that your current region does not support this payment method！！</span>
+            </div>
         </div>
         <div class="qrcode-box" id="paymentQRCode">
             <img src="" alt="QR Code">
@@ -1048,13 +1091,21 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
     function scrollToTop() { window.scrollTo({ top:0, behavior:'smooth' }); }
     function scrollToBottom() { window.scrollTo({ top:document.body.scrollHeight, behavior:'smooth' }); }
 
-    // 页面切换 + 控制谷歌地图显示（仅首页）
     function showPage(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
         
-        // 谷歌地图只在首页显示
+        const targetPage = document.getElementById(pageId);
+        if(targetPage) targetPage.classList.add('active');
+        
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            const onclickAttr = link.getAttribute('onclick');
+            if(onclickAttr && onclickAttr.includes(pageId)){
+                link.classList.add('active');
+            }
+        });
+
         const homeMap = document.getElementById('homeMap');
         if (pageId === 'home') {
             homeMap.classList.add('show');
@@ -1074,7 +1125,9 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
 
     function renderStore() {
         const grid = document.getElementById('mapGrid');
-        grid.innerHTML = getProducts().map(p => `
+        grid.innerHTML = getProducts().map(p => {
+            const originalPrice = (parseInt(p.price) + 200).toString();
+            return `
             <div class="map-card">
                 <div class="map-preview-container">
                     <img src="${p.images[0]}" class="map-main-preview" onclick="openImagePreview(${p.id},0)">
@@ -1086,7 +1139,7 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
                     <h3 class="map-name">${p.name}</h3>
                     <p class="map-short-desc">${p.desc}</p>
                     <div class="price-box">
-                        <span class="original-price">$2499</span>
+                        <span class="original-price">$${originalPrice}</span>
                         <span class="sale-price">$${p.price}</span>
                         <span class="cny-price">¥${p.cny}</span>
                     </div>
@@ -1096,7 +1149,7 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
                     </div>
                 </div>
             </div>
-        `).join('');
+        `}).join('');
     }
 
     function renderAdminGoods() {
