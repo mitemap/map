@@ -3,20 +3,789 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map Studio - Professional Contour & Terrain Maps</title>
+    <title>Map Studio - Professional Map Service</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary: #165DFF;
+            --secondary: #0F172A;
+            --gray: #F8FAFC;
+            --light: #ffffff;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --radius: 14px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --transition: all 0.4s ease;
+        }
+
+        body {
+            background: var(--gray);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .navbar {
+            background: var(--light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            padding: 18px 0;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .site-desc {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-left: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 8px 0;
+            position: relative;
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 1px;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card {
+            background: var(--light);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            padding: 12px 24px;
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .admin-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .map-card {
+            background: var(--light);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-preview-container {
+            width: 100%;
+            height: 240px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-main-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .map-card:hover .map-main-preview {
+            transform: scale(1.05);
+        }
+
+        .preview-thumbnails {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .preview-thumb {
+            width: 32px;
+            height: 32px;
+            border: 2px solid white;
+            border-radius: 4px;
+            object-fit: cover;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .preview-thumb:hover,
+        .preview-thumb.active {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .map-info {
+            padding: 22px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .map-short-desc {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .price-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .original-price {
+            font-size: 16px;
+            color: var(--text-light);
+            text-decoration: line-through;
+        }
+
+        .sale-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .cny-price {
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        .map-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--light);
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #0E42D2;
+        }
+
+        .btn-preview {
+            background: #E2E8F0;
+            color: var(--text);
+            width: 50px;
+            padding: 0;
+        }
+
+        .image-preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .preview-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        .preview-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+        }
+
+        .preview-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.8);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 18px;
+        }
+
+        .preview-prev { left: -50px; }
+        .preview-next { right: -50px; }
+        .preview-counter {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 14px;
+        }
+
+        .btn-cancel {
+            background: #E2E8F0;
+            color: var(--text);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 15px;
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(22,93,255,0.1);
+        }
+
+        .login-box {
+            max-width: 450px;
+            margin: 80px auto;
+            background: var(--light);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .login-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--secondary);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: var(--light);
+            width: 90%;
+            max-width: 900px;
+            border-radius: var(--radius);
+            padding: 0;
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .buy-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .buy-left { padding: 40px; }
+        .buy-right {
+            padding: 40px;
+            background: #F8FAFC;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 10px;
+            padding-bottom: 10px;
+        }
+
+        .slider img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 12px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+        }
+
+        .buy-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--secondary);
+        }
+
+        .buy-price {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .buy-cny {
+            font-size: 20px;
+            color: var(--text-light);
+        }
+
+        .buy-desc {
+            line-height: 1.8;
+            color: var(--text);
+            font-size: 15px;
+        }
+
+        .buy-item {
+            padding: 16px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .buy-item label {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .pay-modal .modal-content {
+            max-width: 500px;
+            padding: 35px;
+            text-align: left;
+        }
+
+        .pay-method-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .pay-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .pay-method {
+            padding: 14px 16px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .pay-method i {
+            font-size: 22px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .qrcode-box {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .qrcode-box img {
+            max-width: 220px;
+            border-radius: 10px;
+        }
+
+        .pay-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .float-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        .float-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(22,93,255,0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .float-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 谷歌地图 - 仅首页显示 + 高度增加2/3 */
+        .google-map-wrapper {
+            display: none;
+            width: 100%;
+            height: 700px;
+            border: none;
+        }
+        .google-map-wrapper.show {
+            display: block;
+        }
+
+        /* 首页图文交叉布局 */
+        .home-section {
+            padding: 50px 0;
+        }
+
+        .home-row {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .home-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .home-col {
+            flex: 1;
+        }
+
+        .home-img {
+            width: 90%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            animation: imgFadeUp 0.8s ease forwards;
+            opacity: 0;
+            transition: transform 0.5s ease;
+        }
+
+        .home-img:hover {
+            transform: scale(1.04);
+        }
+
+        @keyframes imgFadeUp {
+            from { opacity:0; transform: translateY(40px); }
+            to { opacity:1; transform: translateY(0); }
+        }
+
+        .home-text h2 {
+            font-size: 28px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .home-text p {
+            font-size: 16px;
+            line-height: 1.9;
+            color: var(--text);
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .home-row {
+                flex-direction: column !important;
+                gap: 30px;
+            }
+            .home-img {
+                height: 280px;
+            }
+            .map-grid { grid-template-columns: 1fr; }
+            .buy-container { grid-template-columns: 1fr; }
+            .google-map-wrapper { height: 450px; }
+        }
+    </style>
 </head>
 <body>
-<div class="back-to-top" id="backToTop" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></div>
+
+<!-- 浮动按钮 -->
+<div class="float-buttons">
+    <div class="float-btn" id="backToTop" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></div>
+    <div class="float-btn" id="goToBottom" onclick="scrollToBottom()"><i class="fas fa-arrow-down"></i></div>
+</div>
 
 <nav class="navbar">
     <div class="nav-container">
         <a href="#" class="logo-area" onclick="showPage('home'); return false;">
-            <img src="IMG/Logo.png" class="logo-img" alt="Logo">
-            <div><div class="logo-text">Map Studio</div><div class="site-desc">Professional Maps</div></div>
+            <img src="/00/IMG/Logo.png" class="logo-img" alt="Logo">
+            <div>
+                <div class="logo-text">Mite Map</div>
+                <div class="site-desc">Professional map team</div>
+            </div>
         </a>
         <div class="nav-menu">
             <a href="#" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i> Home</a>
@@ -27,83 +796,167 @@
         </div>
     </div>
 </nav>
-<div>
-    <iframe width="100%" height="700" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3814.473066413383!2d96.14424311486633!3d16.79674438843444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c1949df74dbd7f%3A0x3095821f316032b!2sYangon%2C%20Myanmar!5e0!3m2!1sen!2sus!4v1720000000000!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-</iframe>
-</div>
+
+<!-- 谷歌地图：仅首页菜单栏下方显示 -->
+<iframe class="google-map-wrapper" id="homeMap"
+src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d102320.58870285772!2d-122.46881834589845!3d37.79041159313103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085805f6e07975b%3A0x5966c51d21166d14!2sSan%20Francisco%2C%20CA%2C%20USA!5e0!3m2!1sen!2sgb!4v1716465002211!5m2!1sen!2sgb"
+allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
 <div class="container">
-    <!-- 首页：4张图片（新增第4张） -->
+    <!-- 首页：5组图文交叉展示 -->
     <div id="home" class="page active">
-        <h1 class="page-title"><i class="fas fa-globe-asia"></i> Professional Digital Contour & Terrain Maps</h1>
-        <p class="section-desc">Map Studio provides high-precision maps for engineering, research, and design.</p>
-        
-        <div class="intro-section">
-            <div class="intro-text"><h3><i class="fas fa-chart-line"></i> High-Precision Data</h3><p>Professional surveying and mapping data.</p></div>
-            <div class="intro-img"><img src="" id="homeImg1" alt="Data"></div>
-        </div>
-        <div class="intro-section reverse">
-            <div class="intro-text"><h3><i class="fas fa-layer-group"></i> Application Scenarios</h3><p>Wide range of industry applications.</p></div>
-            <div class="intro-img"><img src="" id="homeImg2" alt="Scenario"></div>
-        </div>
-        <div class="intro-section">
-            <div class="intro-text"><h3><i class="fas fa-sync-alt"></i> Stable Updates</h3><p>Regular data updates and after-sales support.</p></div>
-            <div class="intro-img"><img src="" id="homeImg3" alt="Service"></div>
-        </div>
-        <!-- 新增第4张首页图片 -->
-        <div class="intro-section reverse">
-            <div class="intro-text"><h3><i class="fas fa-file-export"></i> Multi-Format Support</h3><p>Support SHAPE, DXF, TIFF, PNG, SVG and CAD formats.</p></div>
-            <div class="intro-img"><img src="" id="homeImg4" alt="Format"></div>
+        <div class="home-section">
+            <!-- 1 -->
+            <div class="home-row">
+                <div class="home-col">
+                    <img src="/00/IMG/001 (13).jpg" class="home-img" style="animation-delay: 0.1s">
+                </div>
+                <div class="home-col home-text">
+                    <h2>Professional High-Precision Terrain Maps</h2>
+                    <p>Map Studio provides global high-precision digital maps for engineering, construction, urban planning, and environmental research. All data comes from real satellite and drone surveys.</p>
+                    <p>Our maps support 1-meter elevation accuracy, clear contour lines, slope analysis, hydrological models, and vegetation distribution, fully meeting professional project requirements.</p>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="home-row reverse">
+                <div class="home-col">
+                    <img src="/00/IMG/001 (12).jpg" class="home-img" style="animation-delay: 0.2s">
+                </div>
+                <div class="home-col home-text">
+                    <h2>Multi-Layer & Editable Map Data</h2>
+                    <p>Each map product includes multiple editable layers: terrain, roads, buildings, rivers, forests, and infrastructure. You can directly use them in CAD, ArcGIS, and other professional software.</p>
+                    <p>We provide long-term data updates to ensure your project always uses the latest geographic information.</p>
+                </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="home-row">
+                <div class="home-col">
+                    <img src="/00/IMG/001 (27).jpg" class="home-img" style="animation-delay: 0.3s">
+                </div>
+                <div class="home-col home-text">
+                    <h2>Global Coverage & Fast Delivery</h2>
+                    <p>We cover most regions of the world, including mountains, coasts, cities, forests, deserts, and rivers. After purchase, you will receive the download link immediately via email.</p>
+                    <p>Our professional support team is ready to help you with data usage and format conversion.</p>
+                </div>
+            </div>
+
+            <!-- 4 -->
+            <div class="home-row reverse">
+                <div class="home-col">
+                    <img src="/00/IMG/001 (29).jpg" class="home-img" style="animation-delay: 0.4s">
+                </div>
+                <div class="home-col home-text">
+                    <h2>Advanced Data Analysis Tools</h2>
+                    <p>Our map products support professional geographic analysis, including elevation statistics, distance measurement, area calculation, and visibility analysis.</p>
+                    <p>All functions are designed for professional users, making your project planning and design more efficient and accurate.</p>
+                </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="home-row">
+                <div class="home-col">
+                    <img src="/00/IMG/001 (9).jpg" class="home-img" style="animation-delay: 0.5s">
+                </div>
+                <div class="home-col home-text">
+                    <h2>Safe & Stable Service Guarantee</h2>
+                    <p>We use secure cloud storage to ensure all map data is safe and available at any time. Multiple payment methods and 24-hour customer service protect your rights.</p>
+                    <p>Choose Map Studio, and enjoy reliable, professional, and efficient geographic data services.</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="store" class="page"><h2 class="page-title"><i class="fas fa-map"></i> Map Store</h2><div class="map-grid" id="mapGrid"></div></div>
-    <div id="about" class="page"><h2 class="page-title"><i class="fas fa-info-circle"></i> About</h2><div class="card"><p>Map Studio is a professional map data provider.</p></div></div>
-    <div id="contact" class="page"><h2 class="page-title"><i class="fas fa-headset"></i> Contact</h2><div class="card"><p>Email: support@mapstudio.com</p></div></div>
+    <!-- 商店 -->
+    <div id="store" class="page">
+        <h2 class="page-title"><i class="fas fa-map"></i> Map Store</h2>
+        <div class="map-grid" id="mapGrid"></div>
+    </div>
 
+    <!-- 关于 -->
+    <div id="about" class="page">
+        <h2 class="page-title"><i class="fas fa-info-circle"></i> About</h2>
+        <div class="card">
+            <p>Map Studio is a professional map data provider specializing in high-precision topographic, terrain, and urban planning maps. Our products are used by engineers, researchers, and urban planners worldwide.Our maps are updated every six months!</p>
+        </div>
+    </div>
+
+    <!-- 联系 -->
+    <div id="contact" class="page">
+        <h2 class="page-title"><i class="fas fa-headset"></i> Contact</h2>
+        <div class="card">
+            <p>Facebook:https://www.facebook.com/MiteMap</p>
+            <p>Email: bjpe52@163.com</p>
+            <p>Phone: +1 (800) 123-4567</p>
+            <p>Address: 080 Map Street, Geography City, GC 00382</p>
+        </div>
+    </div>
+
+    <!-- 登录 -->
     <div id="login" class="page">
         <div class="login-box">
             <h2 class="login-title"><i class="fas fa-user-lock"></i> Admin Login</h2>
-            <div class="form-group"><label class="form-label">Username</label><input type="text" id="username" class="form-input"></div>
-            <div class="form-group"><label class="form-label">Password</label><input type="password" id="password" class="form-input"></div>
-            <div class="btn-row"><button class="btn btn-primary" onclick="adminLogin()">Login</button><button class="btn btn-cancel" onclick="showPage('home')">Cancel</button></div>
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" id="username" class="form-input" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="Enter password">
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" onclick="adminLogin()">Login</button>
+                <button class="btn btn-cancel" onclick="showPage('home')">Cancel</button>
+            </div>
         </div>
     </div>
 
+    <!-- 后台 -->
     <div id="admin" class="page">
         <h2 class="page-title"><i class="fas fa-user-cog"></i> Admin Center</h2>
         <div class="admin-tabs">
             <div class="admin-tab active" onclick="switchAdminPanel('goodsPanel')">Products Manage</div>
-            <div class="admin-tab" onclick="switchAdminPanel('homePanel')">Home Images</div>
-            <div class="admin-tab" onclick="switchAdminPanel('payPanel')">Payment QR</div>
+            <div class="admin-tab" onclick="switchAdminPanel('qrPanel')">Payment QR Codes</div>
             <div class="admin-tab" onclick="switchAdminPanel('accountPanel')">Account</div>
         </div>
 
-        <div id="goodsPanel" class="admin-panel active"><div class="card" id="adminGoodsContainer"></div></div>
-        <!-- 后台Home：4个上传位（对应前台4张图） -->
-        <div id="homePanel" class="admin-panel">
+        <div id="goodsPanel" class="admin-panel active">
+            <div class="card" id="adminGoodsContainer"></div>
+        </div>
+
+        <div id="qrPanel" class="admin-panel">
             <div class="card">
-                <h3 class="card-title">Home Page 4 Images (Frontend 1:1 Matching)</h3>
-                <div class="form-group"><label>Image 1</label><input type="file" class="form-input home-img-upload" data-key="home1" accept="image/*"></div>
-                <div class="form-group"><label>Image 2</label><input type="file" class="form-input home-img-upload" data-key="home2" accept="image/*"></div>
-                <div class="form-group"><label>Image 3</label><input type="file" class="form-input home-img-upload" data-key="home3" accept="image/*"></div>
-                <div class="form-group"><label>Image 4 (New)</label><input type="file" class="form-input home-img-upload" data-key="home4" accept="image/*"></div>
-                <button class="btn btn-primary" onclick="saveHomeImages()">Save All 4 Images</button>
+                <h3 class="card-title"><i class="fas fa-qrcode"></i> Upload Payment QR Codes (Permanent Save)</h3>
+                <div class="form-group">
+                    <label>WeChat Pay QR Code</label>
+                    <input type="file" id="wechat_qr" class="form-input" accept="image/*">
+                    <button class="btn btn-primary" style="margin-top:10px;" onclick="uploadPaymentQR('wechat')">Upload & Save</button>
+                </div>
+                <div class="form-group">
+                    <label>Alipay QR Code</label>
+                    <input type="file" id="alipay_qr" class="form-input" accept="image/*">
+                    <button class="btn btn-primary" style="margin-top:10px;" onclick="uploadPaymentQR('alipay')">Upload & Save</button>
+                </div>
+                <div class="form-group">
+                    <label>PayPal QR Code</label>
+                    <input type="file" id="paypal_qr" class="form-input" accept="image/*">
+                    <button class="btn btn-primary" style="margin-top:10px;" onclick="uploadPaymentQR('paypal')">Upload & Save</button>
+                </div>
             </div>
         </div>
-        <div id="payPanel" class="admin-panel">
-            <div class="card">
-                <h3 class="card-title">Payment QR Codes</h3>
-                <div class="form-group"><label>WeChat Pay</label><input type="file" id="wechat_qr" class="form-input" accept="image/*"></div>
-                <div class="form-group"><label>Alipay</label><input type="file" id="alipay_qr" class="form-input" accept="image/*"></div>
-                <div class="form-group"><label>PayPal</label><input type="file" id="paypal_qr" class="form-input" accept="image/*"></div>
-                <button class="btn btn-primary" onclick="savePayImages()">Save QR Codes</button>
-            </div>
-        </div>
+
         <div id="accountPanel" class="admin-panel">
             <div class="card">
                 <h3 class="card-title">Change Password</h3>
-                <div class="form-group"><label>New Password</label><input type="password" id="new_password" class="form-input"></div>
-                <div class="form-group"><label>Confirm Password</label><input type="password" id="confirm_password" class="form-input"></div>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="new_password" class="form-input" placeholder="Enter new password">
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirm_password" class="form-input" placeholder="Confirm new password">
+                </div>
                 <button class="btn btn-primary" onclick="changePassword()">Update</button>
             </div>
         </div>
@@ -111,10 +964,315 @@
 </div>
 
 <!-- 弹窗 -->
-<div class="image-preview-modal" id="imagePreviewModal"><div class="preview-content"><button class="preview-close" onclick="closeImagePreview()">&times;</button><button class="preview-nav preview-prev" onclick="navigatePreview(-1)"><i class="fas fa-chevron-left"></i></button><img src="" class="preview-image" id="previewMainImage"><button class="preview-nav preview-next" onclick="navigatePreview(1)"><i class="fas fa-chevron-right"></i></button><div class="preview-counter" id="previewCounter"></div></div></div>
-<div class="modal" id="buyModal"><div class="modal-content"><button class="modal-close" onclick="closeBuyModal()">&times;</button><div class="buy-container"><div class="buy-left"><div class="slider" id="buySlider"></div><h3 class="buy-name" id="buyName"></h3><div class="buy-price"><span id="buyPrice"></span><span class="buy-cny" id="buyCny"></span></div><p class="buy-desc" id="buyDesc"></p></div><div class="buy-right"><div class="buy-item"><label>Map Name</label><p id="orderMapName"></p></div><div class="buy-item"><label>Updated</label><p id="updateDate"></p></div><div class="buy-item"><label>Email</label><input type="email" id="buyerEmail" class="form-input" placeholder="Your receive email"></div><button class="btn btn-primary" onclick="openPayModal()" style="margin-top:10px;">Proceed To Pay</button></div></div></div></div>
-<div class="modal pay-modal" id="payModal"><div class="modal-content"><button class="modal-close" onclick="closePayModal()">&times;</button><h3 class="pay-method-title">Select Payment Method</h3><div class="pay-methods"><div class="pay-method" onclick="selectPayment('wechat')"><i class="fab fa-weixin"></i>WeChat Pay</div><div class="pay-method" onclick="selectPayment('alipay')"><i class="fab fa-alipay"></i>Alipay</div><div class="pay-method" onclick="selectPayment('paypal')"><i class="fab fa-paypal"></i>PayPal</div></div><div class="qrcode-box" id="paymentQRCode"><img src="" alt="QR Code"></div><div class="pay-price" id="payPrice"></div><button class="btn btn-primary" onclick="confirmPayment()">Confirm Payment</button></div></div>
+<div class="image-preview-modal" id="imagePreviewModal">
+    <div class="preview-content">
+        <button class="preview-close" onclick="closeImagePreview()">&times;</button>
+        <button class="preview-nav preview-prev" onclick="navigatePreview(-1)"><i class="fas fa-chevron-left"></i></button>
+        <img src="" class="preview-image" id="previewMainImage">
+        <button class="preview-nav preview-next" onclick="navigatePreview(1)"><i class="fas fa-chevron-right"></i></button>
+        <div class="preview-counter" id="previewCounter"></div>
+    </div>
+</div>
 
-<script src="script.js"></script>
+<div class="modal" id="buyModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeBuyModal()">&times;</button>
+        <div class="buy-container">
+            <div class="buy-left">
+                <div class="slider" id="buySlider"></div>
+                <h3 class="buy-name" id="buyName"></h3>
+                <div class="buy-price">
+                    <span id="buyPrice"></span>
+                    <span class="buy-cny" id="buyCny"></span>
+                </div>
+                <p class="buy-desc" id="buyDesc"></p>
+            </div>
+            <div class="buy-right">
+                <div class="buy-item">
+                    <label>Map Name</label>
+                    <p id="orderMapName"></p>
+                </div>
+                <div class="buy-item">
+                    <label>Updated</label>
+                    <p id="updateDate"></p>
+                </div>
+                <div class="buy-item">
+                    <label>Email</label>
+                    <input type="email" id="buyerEmail" class="form-input" placeholder="Your receive email">
+                </div>
+                <button class="btn btn-primary" onclick="openPayModal()" style="margin-top:10px;">Proceed To Pay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal pay-modal" id="payModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closePayModal()">&times;</button>
+        <h3 class="pay-method-title">Select Payment Method</h3>
+        <div class="pay-methods">
+            <div class="pay-method" onclick="selectPayment('wechat')"><i class="fab fa-weixin"></i>WeChat Pay</div>
+            <div class="pay-method" onclick="selectPayment('alipay')"><i class="fab fa-alipay"></i>Alipay</div>
+            <div class="pay-method" onclick="selectPayment('paypal')"><i class="fab fa-paypal"></i>PayPal</div>
+        </div>
+        <div class="qrcode-box" id="paymentQRCode">
+            <img src="" alt="QR Code">
+        </div>
+        <div class="pay-price" id="payPrice"></div>
+        <button class="btn btn-primary" onclick="confirmPayment()">Confirm Payment</button>
+    </div>
+</div>
+
+<script>
+    const defaultProducts = [
+        { id:1, name:"Topographic Contour Map", price:"1999", cny:"14500", desc:"1m elevation accuracy.", updated:"2026-01-15", images:Array(5).fill("https://picsum.photos/800/450?random=1") },
+        { id:2, name:"Mountain Terrain Map", price:"1999", cny:"14500", desc:"3D slope analysis.", updated:"2026-01-18", images:Array(5).fill("https://picsum.photos/800/450?random=2") },
+        { id:3, name:"Coastal Topography Map", price:"1999", cny:"14500", desc:"Hydrological data.", updated:"2026-02-10", images:Array(5).fill("https://picsum.photos/800/450?random=3") },
+        { id:4, name:"Forest Terrain Map", price:"1999", cny:"14500", desc:"Vegetation coverage data.", updated:"2026-02-20", images:Array(5).fill("https://picsum.photos/800/450?random=4") },
+        { id:5, name:"Urban Planning Map", price:"1999", cny:"14500", desc:"Infrastructure layers.", updated:"2026-03-05", images:Array(5).fill("https://picsum.photos/800/450?random=5") },
+        { id:6, name:"River System Map", price:"1999", cny:"14500", desc:"Water flow data.", updated:"2026-03-10", images:Array(5).fill("https://picsum.photos/800/450?random=6") }
+    ];
+
+    let currentPreviewProductId = null, currentPreviewIndex = 0, currentBuyProduct = null, selectedPaymentMethod = 'wechat';
+
+    function initStorage() {
+        if (!localStorage.getItem('mapProducts')) localStorage.setItem('mapProducts', JSON.stringify(defaultProducts));
+        if (!localStorage.getItem('payImages')) localStorage.setItem('payImages', JSON.stringify({ wechat:"", alipay:"", paypal:"" }));
+    }
+
+    const getProducts = () => JSON.parse(localStorage.getItem('mapProducts'));
+    const saveProducts = (data) => localStorage.setItem('mapProducts', JSON.stringify(data));
+    const getPayImages = () => JSON.parse(localStorage.getItem('payImages'));
+    const savePayImagesData = (data) => localStorage.setItem('payImages', JSON.stringify(data));
+
+    function scrollToTop() { window.scrollTo({ top:0, behavior:'smooth' }); }
+    function scrollToBottom() { window.scrollTo({ top:document.body.scrollHeight, behavior:'smooth' }); }
+
+    // 页面切换 + 控制谷歌地图显示（仅首页）
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        
+        // 谷歌地图只在首页显示
+        const homeMap = document.getElementById('homeMap');
+        if (pageId === 'home') {
+            homeMap.classList.add('show');
+        } else {
+            homeMap.classList.remove('show');
+        }
+
+        if (pageId === 'store') renderStore();
+        if (pageId === 'admin') renderAdminGoods();
+    }
+
+    function switchAdminPanel(panelId) {
+        document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(panelId).classList.add('active');
+    }
+
+    function renderStore() {
+        const grid = document.getElementById('mapGrid');
+        grid.innerHTML = getProducts().map(p => `
+            <div class="map-card">
+                <div class="map-preview-container">
+                    <img src="${p.images[0]}" class="map-main-preview" onclick="openImagePreview(${p.id},0)">
+                    <div class="preview-thumbnails">
+                        ${p.images.map((img,i) => `<img src="${img}" class="preview-thumb ${i===0?'active':''}" onclick="switchThumb(${p.id},${i},this)">`).join('')}
+                    </div>
+                </div>
+                <div class="map-info">
+                    <h3 class="map-name">${p.name}</h3>
+                    <p class="map-short-desc">${p.desc}</p>
+                    <div class="price-box">
+                        <span class="original-price">$2499</span>
+                        <span class="sale-price">$${p.price}</span>
+                        <span class="cny-price">¥${p.cny}</span>
+                    </div>
+                    <div class="map-actions">
+                        <button class="btn btn-primary" onclick="openBuyModal(${p.id})"><i class="fas fa-shopping-cart"></i> Buy Now</button>
+                        <button class="btn btn-preview" onclick="openImagePreview(${p.id},0)"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderAdminGoods() {
+        const container = document.getElementById('adminGoodsContainer');
+        container.innerHTML = getProducts().map(p => `
+            <div class="card">
+                <h3 class="card-title">Product ${p.id} - ${p.name}</h3>
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="p${p.id}_name" value="${p.name}" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>Price (USD)</label>
+                    <input type="number" id="p${p.id}_price" value="${p.price}" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>Update Date</label>
+                    <input type="text" id="p${p.id}_updated" value="${p.updated}" class="form-input" placeholder="YYYY-MM-DD">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="p${p.id}_desc" class="form-textarea">${p.desc}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Batch Upload Images (Max 5)</label>
+                    <input type="file" id="img_batch_${p.id}" class="form-input" accept="image/*" multiple>
+                </div>
+                <button class="btn btn-primary" onclick="saveProductBatch(${p.id})">Upload & Save Product</button>
+            </div>
+        `).join('');
+    }
+
+    async function saveProductBatch(id) {
+        try {
+            const products = getProducts();
+            const product = products.find(x => x.id === id);
+            if (!product) return alert('Product not found!');
+
+            product.name = document.getElementById(`p${id}_name`).value.trim() || product.name;
+            product.price = document.getElementById(`p${id}_price`).value || product.price;
+            product.updated = document.getElementById(`p${id}_updated`).value.trim() || product.updated;
+            product.desc = document.getElementById(`p${id}_desc`).value.trim() || product.desc;
+            product.cny = (product.price * 7.23).toFixed(0);
+            product.images = product.images || Array(5).fill("");
+
+            const input = document.getElementById(`img_batch_${id}`);
+            const files = Array.from(input.files).slice(0,5);
+            for (let i=0; i<files.length; i++) {
+                product.images[i] = await new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onload = e => resolve(e.target.result);
+                    reader.readAsDataURL(files[i]);
+                });
+            }
+
+            saveProducts(products);
+            renderStore();
+            renderAdminGoods();
+            input.value = '';
+            alert(`Product ${id} saved successfully!`);
+        } catch (e) { alert('Save failed!'); }
+    }
+
+    async function uploadPaymentQR(type) {
+        const input = document.getElementById(`${type}_qr`);
+        if (!input.files.length) return alert('Please select an image!');
+        
+        const file = input.files[0];
+        const base64 = await new Promise(resolve => {
+            const reader = new FileReader();
+            reader.onload = e => resolve(e.target.result);
+            reader.readAsDataURL(file);
+        });
+
+        const data = getPayImages();
+        data[type] = base64;
+        savePayImagesData(data);
+        input.value = '';
+        alert(`${type.toUpperCase()} QR code saved permanently!`);
+    }
+
+    function openImagePreview(pid, idx) {
+        const p = getProducts().find(x=>x.id===pid);
+        if(!p)return;
+        currentPreviewProductId=pid; currentPreviewIndex=idx;
+        document.getElementById('previewMainImage').src=p.images[idx];
+        document.getElementById('previewCounter').textContent=`${idx+1}/${p.images.length}`;
+        document.getElementById('imagePreviewModal').style.display="flex";
+    }
+
+    function closeImagePreview(){ document.getElementById('imagePreviewModal').style.display="none"; }
+
+    function switchThumb(pid,idx,el){
+        const p=getProducts().find(x=>x.id===pid);
+        if(!p)return;
+        document.querySelector(`.map-main-preview[onclick*="${pid}"]`).src=p.images[idx];
+        document.querySelectorAll(`.preview-thumb[onclick*="${pid}"]`).forEach(t=>t.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function navigatePreview(d){
+        const p=getProducts().find(x=>x.id===currentPreviewProductId);
+        if(!p)return;
+        currentPreviewIndex=(currentPreviewIndex+d+p.images.length)%p.images.length;
+        document.getElementById('previewMainImage').src=p.images[currentPreviewIndex];
+        document.getElementById('previewCounter').textContent=`${currentPreviewIndex+1}/${p.images.length}`;
+    }
+
+    function openBuyModal(pid){
+        const p=getProducts().find(x=>x.id===pid);
+        if(!p)return;
+        currentBuyProduct=p;
+        document.getElementById('buySlider').innerHTML=p.images.map(i=>`<img src="${i}">`).join('');
+        document.getElementById('buyName').innerText=p.name;
+        document.getElementById('buyPrice').innerText=`$${p.price}`;
+        document.getElementById('buyCny').innerText=`¥${p.cny}`;
+        document.getElementById('buyDesc').innerText=p.desc;
+        document.getElementById('orderMapName').innerText=p.name;
+        document.getElementById('updateDate').innerText=p.updated;
+        document.getElementById('buyModal').style.display="flex";
+    }
+
+    function closeBuyModal(){
+        document.getElementById('buyModal').style.display="none";
+        document.getElementById('buyerEmail').value="";
+    }
+
+    function openPayModal(){
+        const email=document.getElementById('buyerEmail').value;
+        if(!email||!email.includes('@'))return alert('Please enter valid email!');
+        const imgs=getPayImages();
+        document.getElementById('payPrice').innerText=`Total: $${currentBuyProduct.price} (¥${currentBuyProduct.cny})`;
+        document.getElementById('paymentQRCode').querySelector('img').src=imgs[selectedPaymentMethod]||`https://picsum.photos/220/220?${selectedPaymentMethod}`;
+        document.getElementById('payModal').style.display="flex";
+    }
+
+    function closePayModal(){ document.getElementById('payModal').style.display="none"; }
+
+    function selectPayment(m){
+        selectedPaymentMethod=m;
+        const imgs=getPayImages();
+        document.getElementById('paymentQRCode').querySelector('img').src=imgs[m]||`https://picsum.photos/220/220?${m}`;
+    }
+
+    function confirmPayment(){
+        alert('Payment successful! We will send the map to your email.');
+        closePayModal(); closeBuyModal();
+    }
+
+    function adminLogin(){
+        const u=document.getElementById('username').value;
+        const p=document.getElementById('password').value;
+        if(u==='001'&&p==='001') showPage('admin');
+        else alert('Account: 001\nPassword:001');
+    }
+
+    function changePassword(){
+        const n=document.getElementById('new_password').value;
+        const c=document.getElementById('confirm_password').value;
+        if(n&&c&&n===c) alert('Password updated!');
+        else alert('Password mismatch!');
+    }
+
+    window.addEventListener('DOMContentLoaded',()=>{
+        initStorage(); renderStore();
+        window.addEventListener('scroll',()=>{
+            const show = window.scrollY>300;
+            document.getElementById('backToTop').classList.toggle('show',show);
+            document.getElementById('goToBottom').classList.toggle('show',show);
+        });
+        window.onclick=e=>{
+            if(e.target===document.getElementById('buyModal'))closeBuyModal();
+            if(e.target===document.getElementById('payModal'))closePayModal();
+            if(e.target===document.getElementById('imagePreviewModal'))closeImagePreview();
+        }
+    });
+</script>
 </body>
 </html>
