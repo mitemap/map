@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Studio - Professional Map Service</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary: #165DFF;
+            --secondary: #0F172A;
+            --gray: #F8FAFC;
+            --light: #ffffff;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --radius: 14px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --transition: all 0.4s ease;
+            --danger: #F53F3F;
+            --disabled: #94A3B8;
+        }
+
+        body {
+            background: var(--gray);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .navbar {
+            background: var(--light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            padding: 18px 0;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .site-desc {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-left: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 8px 0;
+            position: relative;
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 1px;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card {
+            background: var(--light);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            padding: 12px 24px;
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .admin-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .map-card {
+            background: var(--light);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-preview-container {
+            width: 100%;
+            height: 240px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-main-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .map-card:hover .map-main-preview {
+            transform: scale(1.05);
+        }
+
+        .preview-thumbnails {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .preview-thumb {
+            width: 32px;
+            height: 32px;
+            border: 2px solid white;
+            border-radius: 4px;
+            object-fit: cover;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .preview-thumb:hover,
+        .preview-thumb.active {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .map-info {
+            padding: 22px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .map-short-desc {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .price-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .original-price {
+            font-size: 16px;
+            color: var(--text-light);
+            text-decoration: line-through;
+        }
+
+        .sale-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .cny-price {
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        .map-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--light);
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #0E42D2;
+        }
+
+        .btn-preview {
+            background: #E2E8F0;
+            color: var(--text);
+            width: 50px;
+            padding: 0;
+        }
+
+        .image-preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .preview-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        .preview-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+        }
+
+        .preview-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.8);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 18px;
+        }
+
+        .preview-prev { left: -50px; }
+        .preview-next { right: -50px; }
+        .preview-counter {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 14px;
+        }
+
+        .btn-cancel {
+            background: #E2E8F0;
+            color: var(--text);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 15px;
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(22,93,255,0.1);
+        }
+
+        .login-box {
+            max-width: 450px;
+            margin: 80px auto;
+            background: var(--light);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .login-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--secondary);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: var(--light);
+            width: 90%;
+            max-width: 900px;
+            border-radius: var(--radius);
+            padding: 0;
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .buy-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .buy-left { padding: 40px; }
+        .buy-right {
+            padding: 40px;
+            background: #F8FAFC;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 10px;
+            padding-bottom: 10px;
+        }
+
+        .slider img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 12px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+        }
+
+        .buy-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--secondary);
+        }
+
+        .buy-price {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .buy-cny {
+            font-size: 20px;
+            color: var(--text-light);
+        }
+
+        .buy-desc {
+            line-height: 1.8;
+            color: var(--text);
+            font-size: 15px;
+        }
+
+        .buy-item {
+            padding: 16px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .buy-item label {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .important-note {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .pay-modal .modal-content {
+            max-width: 500px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-radius: 16px;
+        }
+
+        .pay-method-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .pay-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .pay-method {
+            padding: 14px 16px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .pay-method:hover {
+            border-color: var(--primary);
+            background-color: rgba(22,93,255,0.02);
+        }
+
+        .pay-method.disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            background-color: #F1F5F9;
+        }
+
+        .pay-method.disabled:hover {
+            border-color: #E2E8F0;
+            background-color: #F1F5F9;
+        }
+
+        .pay-method i {
+            font-size: 22px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .paypal-note {
+            font-size: 12px;
+            color: var(--danger);
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        .qrcode-box {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .qrcode-box img {
+            max-width: 220px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .pay-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .pay-modal .btn-primary {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            display: block;
+            padding: 14px 20px;
+            font-size: 16px;
+        }
+
+        .float-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        .float-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(22,93,255,0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .float-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .google-map-wrapper {
+            display: none;
+            width: 100%;
+            height: 700px;
+            border: none;
+            border-radius: var(--radius);
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+        .google-map-wrapper.show {
+            display: block;
+        }
+
+        .home-section {
+            padding: 50px 0;
+        }
+
+        .home-row {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .home-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .home-col {
+            flex: 1;
+        }
+
+        .home-img {
+            width: 90%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            animation: imgFadeUp 0.8s ease forwards;
+            opacity: 0;
+            transition: transform 0.5s ease;
+        }
+
+        .home-img:hover {
+            transform: scale(1.04);
+        }
+
+        @keyframes imgFadeUp {
+            from { opacity:0; transform: translateY(40px); }
+            to { opacity:1; transform: translateY(0); }
+        }
+
+        .home-text h2 {
+            font-size: 28px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .home-text p {
+            font-size: 16px;
+            line-height: 1.9;
+            color: var(--text);
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .home-row {
+                flex-direction: column !important;
+                gap: 30px;
+            }
+            .home-img {
+                height: 280px;
+            }
+            .map-grid { grid-template-columns: 1fr; }
+            .buy-container { grid-template-columns: 1fr; }
+            .google-map-wrapper { height: 450px; }
+            
+            .pay-modal .modal-content {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="float-buttons">
+    <div class="float-btn" id="backToTop" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></div>
+    <div class="float-btn" id="goToBottom" onclick="scrollToBottom()"><i class="fas fa-arrow-down"></i></div>
+</div>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="javascript:;" class="logo-area" onclick="showPage('home')">
+            <img src="IMG/Logo.png" class="logo-img" alt="Logo">
+            <div>
+                <div class="logo-text">Mite Map</div>
+                <div class="site-desc">Professional map team</div>
+            </div>
+        </a>
+        <div class="nav-menu">
+            <a href="javascript:;" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i> Home</a>
+            <a href="javascript:;" class="nav-link" onclick="showPage('store')"><i class="fas fa-map"></i> Store</a>
+            <a href="javascript:;" class="nav-link" onclick="showPage('about')"><i class="fas fa-info-circle"></i> About</a>
+            <a href="javascript:;" class="nav-link" onclick="showPage('contact')"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="javascript:;" class="nav-link" onclick="showPage('login')"><i class="fas fa-user-shield"></i> Login</a>
+        </div>
+    </div>
+</nav>
+
+<iframe class="google-map-wrapper" id="homeMap"
+src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d102320.58870285772!2d-122.46881834589845!3d37.79041159313103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085805f6e07975b%3A0x5966c51d21166d14!2sSan%20Francisco%2C%20CA%2C%20USA!5e0!3m2!1sen!2sgb!4v1716465002211!5m2!1sen!2sgb"
+allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+<div class="container">
+    <div id="home" class="page active">
+        <div class="home-section">
+            <div class="home-row">
+                <div class="home-col">
+                    <img src="IMG/001 (13).jpg" class="home-img" style="animation-delay: 0.1s">
+                </div>
+                <div class="home-col home-text">
+                    <h2>Professional High-Precision Terrain Maps</h2>
+                    <p>Map Studio provides global high-precision digital maps for engineering, construction, urban planning, and environmental research. All data comes from real satellite and drone surveys.</p>
+                    <p>Our maps support 1-meter elevation accuracy, clear contour lines, slope analysis, hydrological models, and vegetation distribution, fully meeting professional project requirements.</p>
+                </div>
+            </div>
+            <div class="home-row reverse">
+                <div class="home-col">
+                    <img src="IMG/001 (12).jpg" class="home-img" style="animation-delay: 0.2s">
+                </div>
+                <div class="home-col home-text">
+                    <h2>Multi-Layer & Editable Map Data</h2>
+                    <p>Each map product includes multiple editable layers: terrain, roads, buildings, rivers, forests, and infrastructure. You can directly use them in CAD, ArcGIS, and other professional software.</p>
+                    <p>We provide long-term data updates to ensure your project always uses the latest geographic information.</p>
+                </div>
+            </div>
+            <div class="home-row">
+                <div class="home-col">
+                    <img src="IMG/001 (27).jpg" class="home-img" style="animation-delay: 0.3s">
+                </div>
+                <div class="home-col home-text">
+                    <h2>Global Coverage & Fast Delivery</h2>
+                    <p>We cover most regions of the world, including mountains, coasts, cities, forests, deserts, and rivers. After purchase, you will receive the download link immediately via email.</p>
+                    <p>Our professional support team is ready to help you with data usage and format conversion.</p>
+                </div>
+            </div>
+            <div class="home-row reverse">
+                <div class="home-col">
+                    <img src="IMG/001 (29).jpg" class="home-img" style="animation-delay: 0.4s">
+                </div>
+                <div class="home-col home-text">
+                    <h2>Advanced Data Analysis Tools</h2>
+                    <p>Our map products support professional geographic analysis, including elevation statistics, distance measurement, area calculation, and visibility analysis.</p>
+                    <p>All functions are designed for professional users, making your project planning and design more efficient and accurate.</p>
+                </div>
+            </div>
+            <div class="home-row">
+                <div class="home-col">
+                    <img src="IMG/001 (9).jpg" class="home-img" style="animation-delay: 0.5s">
+                </div>
+                <div class="home-col home-text">
+                    <h2>Safe & Stable Service Guarantee</h2>
+                    <p>We use secure cloud storage to ensure all map data is safe and available at any time. Multiple payment methods and 24-hour customer service protect your rights.</p>
+                    <p>Choose Map Studio, and enjoy reliable, professional, and efficient geographic data services.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="store" class="page">
+        <h2 class="page-title"><i class="fas fa-map"></i> Map Store</h2>
+        <div class="map-grid" id="mapGrid"></div>
+    </div>
+
+    <div id="about" class="page">
+        <h2 class="page-title"><i class="fas fa-info-circle"></i> About</h2>
+        <div class="card">
+            <p>Map Studio is a professional map data provider specializing in high-precision topographic, terrain, and urban planning maps. Our products are used by engineers, researchers, and urban planners worldwide.Our maps are updated every six months!</p>
+        </div>
+    </div>
+
+    <div id="contact" class="page">
+        <h2 class="page-title"><i class="fas fa-headset"></i> Contact</h2>
+        <div class="card">
+            <p>Facebook:https://www.facebook.com/MiteMap</p>
+            <p>Email: bjpe52@163.com</p>
+            <p>Phone: +1 (800) 123-4567</p>
+            <p>Address: 080 Map Street, Geography City, GC 00382</p>
+        </div>
+    </div>
+
+    <div id="login" class="page">
+        <div class="login-box">
+            <h2 class="login-title"><i class="fas fa-user-lock"></i> Admin Login</h2>
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" id="username" class="form-input" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="Enter password">
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" onclick="adminLogin()">Login</button>
+                <button class="btn btn-cancel" onclick="switchAdminPanel('goodsPanel')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin" class="page">
+        <h2 class="page-title"><i class="fas fa-user-cog"></i> Admin Center</h2>
+        <div class="admin-tabs">
+            <div class="admin-tab active" onclick="switchAdminPanel('goodsPanel')">Products Manage</div>
+            <div class="admin-tab" onclick="switchAdminPanel('qrPanel')">Payment QR Codes</div>
+            <div class="admin-tab" onclick="switchAdminPanel('accountPanel')">Account</div>
+        </div>
+
+        <div id="goodsPanel" class="admin-panel active">
+            <div class="card" id="adminGoodsContainer"></div>
+        </div>
+
+        <div id="qrPanel" class="admin-panel">
+            <div class="card">
+                <h3 class="card-title"><i class="fas fa-qrcode"></i> Upload Payment QR Codes (Permanent Save)</h3>
+                <div class="form-group">
+                    <label>WeChat Pay QR Code</label>
+                    <input type="file" id="wechat_qr" class="form-input" accept="image/*">
+                    <button class="btn btn-primary" style="margin-top:10px;" onclick="uploadPaymentQR('wechat')">Upload & Save</button>
+                </div>
+                <div class="form-group">
+                    <label>Alipay QR Code</label>
+                    <input type="file" id="alipay_qr" class="form-input" accept="image/*">
+                    <button class="btn btn-primary" style="margin-top:10px;" onclick="uploadPaymentQR('alipay')">Upload & Save</button>
+                </div>
+                <div class="form-group">
+                    <label>PayPal QR Code</label>
+                    <input type="file" id="paypal_qr" class="form-input" accept="image/*">
+                    <button class="btn btn-primary" style="margin-top:10px;" onclick="uploadPaymentQR('paypal')">Upload & Save</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="accountPanel" class="admin-panel">
+            <div class="card">
+                <h3 class="card-title">Change Password</h3>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="new_password" class="form-input" placeholder="Enter new password">
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirm_password" class="form-input" placeholder="Confirm new password">
+                </div>
+                <button class="btn btn-primary" onclick="changePassword()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="image-preview-modal" id="imagePreviewModal">
+    <div class="preview-content">
+        <button class="preview-close" onclick="closeImagePreview()">&times;</button>
+        <button class="preview-nav preview-prev" onclick="navigatePreview(-1)"><i class="fas fa-chevron-left"></i></button>
+        <img src="" class="preview-image" id="previewMainImage">
+        <button class="preview-nav preview-next" onclick="navigatePreview(1)"><i class="fas fa-chevron-right"></i></button>
+        <div class="preview-counter" id="previewCounter"></div>
+    </div>
+</div>
+
+<div class="modal" id="buyModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeBuyModal()">&times;</button>
+        <div class="buy-container">
+            <div class="buy-left">
+                <div class="slider" id="buySlider"></div>
+                <h3 class="buy-name" id="buyName"></h3>
+                <div class="buy-price">
+                    <span id="buyPrice"></span>
+                    <span class="buy-cny" id="buyCny"></span>
+                </div>
+                <p class="buy-desc" id="buyDesc"></p>
+            </div>
+            <div class="buy-right">
+                <div class="buy-item">
+                    <label>Map Name</label>
+                    <p id="orderMapName"></p>
+                </div>
+                <div class="buy-item">
+                    <label>Updated</label>
+                    <p id="updateDate"></p>
+                </div>
+                <div class="buy-item">
+                    <label>Email</label>
+                    <input type="email" id="buyerEmail" class="form-input" placeholder="Your receive email">
+                    <div class="important-note">
+                        <i class="fas fa-exclamation-circle"></i> Note: Please enter a valid email address, the download link will be sent to this address
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="openPayModal()" style="margin-top:10px;">Proceed To Pay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal pay-modal" id="payModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closePayModal()">&times;</button>
+        <h3 class="pay-method-title">Select Payment Method</h3>
+        <div class="pay-methods">
+            <div class="pay-method" onclick="selectPayment('wechat')"><i class="fab fa-weixin"></i>WeChat Pay</div>
+            <div class="pay-method" onclick="selectPayment('alipay')"><i class="fab fa-alipay"></i>Alipay</div>
+            <div class="pay-method disabled">
+                <i class="fab fa-paypal"></i>PayPal
+                <span class="paypal-note">It has been detected that your current region does not support this payment method！！</span>
+            </div>
+        </div>
+        <div class="qrcode-box" id="paymentQRCode">
+            <img src="" alt="QR Code">
+        </div>
+        <div class="pay-price" id="payPrice"></div>
+        <button class="btn btn-primary" onclick="confirmPayment()">Confirm Payment</button>
+    </div>
+</div>
+
+<script>
+    // 汇率：1 美元 = 7.25 人民币（可自己改）
+    const USD_TO_CNY_RATE = 7.25;
+
+    // 默认商品：现在只需要存 originalPrice（原价）、price（现价）
+    const defaultProducts = [
+        { 
+            id:1, 
+            name:"Topographic Contour Map", 
+            originalPrice: "2499",  // 原价
+            price: "1999",          // 现价
+            desc:"1m elevation accuracy.", 
+            updated:"2026-01-15", 
+            images: [
+                "IMG/map1_1.jpg", "IMG/map1_2.jpg", "IMG/map1_3.jpg", "IMG/map1_4.jpg", "IMG/map1_5.jpg"
+            ] 
+        },
+        { 
+            id:2, 
+            name:"Mountain Terrain Map", 
+            originalPrice: "2499",
+            price: "1999",
+            desc:"3D slope analysis.", 
+            updated:"2026-01-18", 
+            images: [
+                "IMG/map2_1.jpg", "IMG/map2_2.jpg", "IMG/map2_3.jpg", "IMG/map2_4.jpg", "IMG/map2_5.jpg"
+            ] 
+        },
+        { 
+            id:3, 
+            name:"Coastal Topography Map", 
+            originalPrice: "2499",
+            price: "1999",
+            desc:"Hydrological data.", 
+            updated:"2026-02-10", 
+            images: [
+                "IMG/map3_1.jpg", "IMG/map3_2.jpg", "IMG/map3_3.jpg", "IMG/map3_4.jpg", "IMG/map3_5.jpg"
+            ] 
+        },
+        { 
+            id:4, 
+            name:"Forest Terrain Map", 
+            originalPrice: "2499",
+            price: "1999",
+            desc:"Vegetation coverage data.", 
+            updated:"2026-02-20", 
+            images: [
+                "IMG/map4_1.jpg", "IMG/map4_2.jpg", "IMG/map4_3.jpg", "IMG/map4_4.jpg", "IMG/map4_5.jpg"
+            ] 
+        },
+        { 
+            id:5, 
+            name:"Urban Planning Map", 
+            originalPrice: "2499",
+            price: "1999",
+            desc:"Infrastructure layers.", 
+            updated:"2026-03-05", 
+            images: [
+                "IMG/map5_1.jpg", "IMG/map5_2.jpg", "IMG/map5_3.jpg", "IMG/map5_4.jpg", "IMG/map5_5.jpg"
+            ] 
+        },
+        { 
+            id:6, 
+            name:"River System Map", 
+            originalPrice: "2499",
+            price: "1999",
+            desc:"Water flow data.", 
+            updated:"2026-03-10", 
+            images: [
+                "IMG/map6_1.jpg", "IMG/map6_2.jpg", "IMG/map6_3.jpg", "IMG/map6_4.jpg", "IMG/map6_5.jpg"
+            ] 
+        }
+    ];
+
+    let currentPreviewProductId = null, currentPreviewIndex = 0, currentBuyProduct = null, selectedPaymentMethod = 'wechat';
+
+    function initStorage() {
+        if (!localStorage.getItem('mapProducts')) localStorage.setItem('mapProducts', JSON.stringify(defaultProducts));
+        if (!localStorage.getItem('payImages')) localStorage.setItem('payImages', JSON.stringify({ wechat:"", alipay:"", paypal:"" }));
+    }
+
+    const getProducts = () => JSON.parse(localStorage.getItem('mapProducts'));
+    const saveProducts = (data) => localStorage.setItem('mapProducts', JSON.stringify(data));
+    const getPayImages = () => JSON.parse(localStorage.getItem('payImages'));
+    const savePayImagesData = (data) => localStorage.setItem('payImages', JSON.stringify(data));
+
+    // 自动换算人民币
+    function toCNY(usd) {
+        return Math.round(parseFloat(usd) * USD_TO_CNY_RATE);
+    }
+
+    function scrollToTop() { window.scrollTo({ top:0, behavior:'smooth' }); }
+    function scrollToBottom() { window.scrollTo({ top:document.body.scrollHeight, behavior:'smooth' }); }
+
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        
+        const targetPage = document.getElementById(pageId);
+        if(targetPage) targetPage.classList.add('active');
+        
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            const onclickAttr = link.getAttribute('onclick');
+            if(onclickAttr && onclickAttr.includes(pageId)){
+                link.classList.add('active');
+            }
+        });
+
+        const homeMap = document.getElementById('homeMap');
+        pageId === 'home' ? homeMap.classList.add('show') : homeMap.classList.remove('show');
+
+        const floatBtns = document.querySelectorAll('.float-btn');
+        pageId !== 'home' ? floatBtns.forEach(btn => btn.classList.add('show')) : floatBtns.forEach(btn => btn.classList.remove('show'));
+
+        if (pageId === 'store') renderMapProducts();
+        if (pageId === 'admin') renderAdminProducts();
+    }
+
+ // 前台商店：显示原价（划线）+ 售价
+function renderMapProducts() {
+    const mapGrid = document.getElementById('mapGrid');
+    const products = getProducts();
+    mapGrid.innerHTML = '';
+
+    products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'map-card';
+        const firstImg = product.images?.[0] || "IMG/001 (1).jpg";
+
+        card.innerHTML = `
+            <div class="map-preview-container">
+                <img src="${firstImg}" class="map-main-preview" onclick="openImagePreview(${product.id}, 0)">
+                <div class="preview-thumbnails">
+                    ${product.images?.map((img, idx) => `
+                        <img src="${img}" class="preview-thumb ${idx===0?'active':''}" onclick="openImagePreview(${product.id},${idx})">
+                    `).join('')}
+                </div>
+            </div>
+            <div class="map-info">
+                <h3 class="map-name">${product.name}</h3>
+                <p class="map-short-desc">${product.desc}</p>
+                
+                <div class="price-box">
+                    ${product.originalPrice ? `<span class="original-price">$${product.originalPrice}</span>` : ''}
+                    <span class="sale-price">$${product.price}</span>
+                    <span class="cny-price">¥${product.cny}</span>
+                </div>
+
+                <div class="map-actions">
+                    <button class="btn btn-preview" onclick="openImagePreview(${product.id},0)"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-primary" onclick="openBuyModal(${product.id})"><i class="fas fa-shopping-cart"></i> Buy Now</button>
+                </div>
+            </div>
+        `;
+        mapGrid.appendChild(card);
+    });
+}
+
+    function openImagePreview(productId, index) {
+        const products = getProducts();
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+
+        currentPreviewProductId = productId;
+        currentPreviewIndex = index;
+        const modal = document.getElementById('imagePreviewModal');
+        const previewImg = document.getElementById('previewMainImage');
+        const counter = document.getElementById('previewCounter');
+        previewImg.src = product.images[index];
+        counter.textContent = `${index + 1}/${product.images.length}`;
+        modal.style.display = 'flex';
+    }
+
+    function closeImagePreview() {
+        document.getElementById('imagePreviewModal').style.display = 'none';
+    }
+
+    function navigatePreview(direction) {
+        const products = getProducts();
+        const product = products.find(p => p.id === currentPreviewProductId);
+        if (!product) return;
+
+        currentPreviewIndex += direction;
+        if (currentPreviewIndex < 0) currentPreviewIndex = product.images.length - 1;
+        if (currentPreviewIndex >= product.images.length) currentPreviewIndex = 0;
+
+        const previewImg = document.getElementById('previewMainImage');
+        const counter = document.getElementById('previewCounter');
+        previewImg.src = product.images[currentPreviewIndex];
+        counter.textContent = `${currentPreviewIndex + 1}/${product.images.length}`;
+    }
+
+    // 购买弹窗（自动换算人民币）
+    function openBuyModal(productId) {
+        const products = getProducts();
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+
+        currentBuyProduct = product;
+        const modal = document.getElementById('buyModal');
+        const slider = document.getElementById('buySlider');
+        const nameEl = document.getElementById('buyName');
+        const priceEl = document.getElementById('buyPrice');
+        const cnyEl = document.getElementById('buyCny');
+        const descEl = document.getElementById('buyDesc');
+        const orderNameEl = document.getElementById('orderMapName');
+        const updateDateEl = document.getElementById('updateDate');
+
+        slider.innerHTML = product.images.map(img => `<img src="${img}" alt="${product.name}">`).join('');
+        nameEl.textContent = product.name;
+        priceEl.textContent = `$${product.price}`;
+        cnyEl.textContent = `¥${toCNY(product.price)}`;
+        descEl.textContent = product.desc;
+        orderNameEl.textContent = product.name;
+        updateDateEl.textContent = product.updated;
+        modal.style.display = 'flex';
+    }
+
+    function closeBuyModal() {
+        document.getElementById('buyModal').style.display = 'none';
+    }
+
+    function openPayModal() {
+        const email = document.getElementById('buyerEmail').value;
+        if (!email || !email.includes('@')) {
+            alert('Please enter a valid email address!');
+            return;
+        }
+
+        const payModal = document.getElementById('payModal');
+        const payPrice = document.getElementById('payPrice');
+        payPrice.textContent = `Total: $${currentBuyProduct.price} (¥${toCNY(currentBuyProduct.price)})`;
+        selectPayment('wechat');
+        payModal.style.display = 'flex';
+    }
+
+    function closePayModal() {
+        document.getElementById('payModal').style.display = 'none';
+    }
+
+    function selectPayment(method) {
+        if (method === 'paypal') return;
+        selectedPaymentMethod = method;
+        document.querySelectorAll('.pay-method').forEach(pm => pm.classList.remove('active'));
+        const activeMethod = document.querySelector(`.pay-method[onclick*="${method}"]`);
+        if (activeMethod) activeMethod.classList.add('active');
+
+        const payImages = getPayImages();
+        const qrImg = document.querySelector('#paymentQRCode img');
+        qrImg.src = payImages[method] || `IMG/${method}_qr_default.png`;
+    }
+
+    function confirmPayment() {
+        alert(`Payment confirmed! The download link will be sent to your email: ${document.getElementById('buyerEmail').value}`);
+        closePayModal();
+        closeBuyModal();
+    }
+
+    function adminLogin() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        if (username === 'admin' && password === 'admin123') {
+            showPage('admin');
+        } else {
+            alert('Invalid username or password!');
+        }
+    }
+
+    function switchAdminPanel(panelId) {
+        document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(panelId).classList.add('active');
+        const activeTab = Array.from(document.querySelectorAll('.admin-tab')).find(t => t.onclick.toString().includes(panelId));
+        if (activeTab) activeTab.classList.add('active');
+        if (panelId === 'goodsPanel') renderAdminProducts();
+    }
+
+    // 后台商品列表
+function renderAdminProducts() {
+    const container = document.getElementById('adminGoodsContainer');
+    const products = getProducts();
+    
+    container.innerHTML = `
+        <h3 class="card-title"><i class="fas fa-box"></i> Products List</h3>
+        <div style="margin-bottom: 20px;">
+            <button class="btn btn-primary" onclick="addNewProduct()"><i class="fas fa-plus"></i> Add New Product</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+            ${products.map(product => `
+                <div class="card" style="padding: 20px;">
+                    <h4 style="margin-bottom: 10px;">${product.name}</h4>
+                    <div style="margin-bottom: 10px;">
+                        <img src="${product.images[0]}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;" alt="${product.name}">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <p><strong>Original:</strong> $${product.originalPrice}</p>
+                        <p><strong>Now:</strong> $${product.price}</p>
+                        <p><strong>CNY:</strong> ¥${toCNY(product.price)}</p>
+                        <p><strong>Updated:</strong> ${product.updated}</p>
+                        <p><strong>Desc:</strong> ${product.desc}</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 8px;">
+                        <button class="btn btn-primary" style="flex:1" onclick="editProduct(${product.id})"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn btn-cancel" style="flex:1" onclick="deleteProduct(${product.id})"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+    // 新增商品
+    function addNewProduct() {
+        const newId = getProducts().length + 1;
+        const newProduct = {
+            id: newId,
+            name: "New Map",
+            originalPrice: "2499",
+            price: "1999",
+            desc: "New map",
+            updated: new Date().toISOString().split('T')[0],
+            images: ["IMG/new1.jpg","IMG/new2.jpg","IMG/new3.jpg","IMG/new4.jpg","IMG/new5.jpg"]
+        };
+        const products = getProducts();
+        products.push(newProduct);
+        saveProducts(products);
+        renderAdminProducts();
+    }
+// 编辑弹窗：支持 原价 + 售价 自定义
+function editProduct(productId) {
+    const p = getProducts().find(x => x.id === productId);
+    if (!p) return;
+
+    const pannel = document.createElement("div");
+    pannel.id = "editModalPanel";
+    pannel.innerHTML = `
+    <div style="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:grid;place-items:center;padding:20px;">
+        <div style="background:white;border-radius:16px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;padding:30px;">
+            <h3 style="margin-bottom:20px;">Edit Product</h3>
+            
+            <div class="form-group">
+                <label class="form-label">Product Name</label>
+                <input class="form-input" id="e_name" value="${p.name}">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Original Price (USD) 划线原价</label>
+                <input class="form-input" id="e_originalPrice" value="${p.originalPrice || ''}">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Sale Price (USD) 售价</label>
+                <input class="form-input" id="e_price" value="${p.price}">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">CNY Price 人民币价格</label>
+                <input class="form-input" id="e_cny" value="${p.cny}">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="e_desc">${p.desc}</textarea>
+            </div>
+
+            <div style="margin:24px 0;border-top:1px solid #eee;padding-top:20px;">
+                <h4 style="margin-bottom:14px;color:var(--primary);">Image Paths</h4>
+                ${[0,1,2,3,4].map(i => `
+                <div class="form-group" style="margin-bottom:10px;">
+                    <label>Image ${i+1}</label>
+                    <input class="form-input" id="e_img${i}" value="${p.images[i] || ''}">
+                </div>
+                `).join('')}
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:10px;">
+                <button class="btn btn-primary" style="flex:1;" onclick="saveEdit(${p.id})">Save</button>
+                <button class="btn btn-cancel" style="flex:1;" onclick="closeEditModal()">Cancel</button>
+            </div>
+        </div>
+    </div>`;
+    document.body.appendChild(pannel);
+}
+
+// 关闭编辑弹窗（新增）
+function closeEditModal() {
+    const modal = document.getElementById("editModalPanel");
+    if (modal) modal.remove();
+}
+
+// 保存编辑：原价 + 售价 + 图片全部保存
+function saveEdit(id) {
+    const list = getProducts();
+    const item = list.find(x => x.id === id);
+    if (!item) return;
+
+    item.name = document.getElementById('e_name').value;
+    item.originalPrice = document.getElementById('e_originalPrice').value;
+    item.price = document.getElementById('e_price').value;
+    item.cny = document.getElementById('e_cny').value;
+    item.desc = document.getElementById('e_desc').value;
+
+    item.images = [
+        document.getElementById('e_img0').value,
+        document.getElementById('e_img1').value,
+        document.getElementById('e_img2').value,
+        document.getElementById('e_img3').value,
+        document.getElementById('e_img4').value
+    ];
+
+    saveProducts(list);
+    renderMapProducts();
+    renderAdminProducts();
+    closeEditModal();
+    alert('Saved successfully!');
+}
+
+    function deleteProduct(productId) {
+        if(confirm('Delete?')){
+            saveProducts(getProducts().filter(x => x.id !== productId));
+            renderAdminProducts();
+        }
+    }
+
+    function uploadPaymentQR(type) {
+        const inp = document.getElementById(type+'_qr');
+        const f = inp.files[0];
+        if(!f) return alert('Select image!');
+        const r = new FileReader();
+        r.onload = e=>{
+            const d = getPayImages();
+            d[type] = e.target.result;
+            savePayImagesData(d);
+            alert('Saved!');
+        };
+        r.readAsDataURL(f);
+    }
+
+    function changePassword() {
+        const n = document.getElementById('new_password').value;
+        const c = document.getElementById('confirm_password').value;
+        if(!n || !c) return alert('Fill all!');
+        if(n!==c) return alert('Not match!');
+        alert('Updated!');
+        document.getElementById('new_password').value='';
+        document.getElementById('confirm_password').value='';
+    }
+
+    window.onload = function(){
+        initStorage();
+        window.onscroll = ()=>{
+            const btns = document.querySelectorAll('.float-btn');
+            window.scrollY>300 ? btns.forEach(b=>b.classList.add('show')) : btns.forEach(b=>b.classList.remove('show'));
+        };
+        window.onclick = e=>{
+            if(e.target === document.getElementById('buyModal')) closeBuyModal();
+            if(e.target === document.getElementById('payModal')) closePayModal();
+            if(e.target === document.getElementById('imagePreviewModal')) closeImagePreview();
+        };
+    };
+</script>
+</body>
+</html>
