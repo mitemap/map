@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map Studio - Professional Map Service</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -835,7 +835,7 @@
 <nav class="navbar">
     <div class="nav-container">
         <a href="javascript:;" class="logo-area" onclick="showPage('home')">
-            <img src="img/Logo.png" class="logo-img" alt="Logo">
+            <img src="logo.png" class="logo-img" alt="Logo">
             <div>
                 <div class="logo-text">Mite Map</div>
                 <div class="site-desc">Professional map team</div>
@@ -860,7 +860,7 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
         <div class="home-section">
             <div class="home-row">
                 <div class="home-col">
-                    <img src="img/001 (13).jpg" class="home-img" style="animation-delay: 0.1s">
+                    <img src="001_13.jpg" class="home-img" style="animation-delay: 0.1s">
                 </div>
                 <div class="home-col home-text">
                     <h2>Professional High-Precision Terrain Maps</h2>
@@ -870,7 +870,7 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
             </div>
             <div class="home-row reverse">
                 <div class="home-col">
-                    <img src="img/001 (12).jpg" class="home-img" style="animation-delay: 0.2s">
+                    <img src="001_12.jpg" class="home-img" style="animation-delay: 0.2s">
                 </div>
                 <div class="home-col home-text">
                     <h2>Multi-Layer & Editable Map Data</h2>
@@ -880,7 +880,7 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
             </div>
             <div class="home-row">
                 <div class="home-col">
-                    <img src="img/001 (27).jpg" class="home-img" style="animation-delay: 0.3s">
+                    <img src="001_27.jpg" class="home-img" style="animation-delay: 0.3s">
                 </div>
                 <div class="home-col home-text">
                     <h2>Global Coverage & Fast Delivery</h2>
@@ -890,7 +890,7 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
             </div>
             <div class="home-row reverse">
                 <div class="home-col">
-                    <img src="img/001 (29).jpg" class="home-img" style="animation-delay: 0.4s">
+                    <img src="001_29.jpg" class="home-img" style="animation-delay: 0.4s">
                 </div>
                 <div class="home-col home-text">
                     <h2>Advanced Data Analysis Tools</h2>
@@ -900,7 +900,7 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
             </div>
             <div class="home-row">
                 <div class="home-col">
-                    <img src="img/001 (9).jpg" class="home-img" style="animation-delay: 0.5s">
+                    <img src="001_9.jpg" class="home-img" style="animation-delay: 0.5s">
                 </div>
                 <div class="home-col home-text">
                     <h2>Safe & Stable Service Guarantee</h2>
@@ -1067,75 +1067,71 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
 </div>
 
 <script>
-    // 汇率：1 美元 = 7.25 人民币（可自己改）
-    const USD_TO_CNY_RATE = 7.25;
-
-    // 默认商品：现在只需要存 originalPrice（原价）、price（现价）
     const defaultProducts = [
         { 
             id:1, 
             name:"Topographic Contour Map", 
-            originalPrice: "2499",  // 原价
-            price: "1999",          // 现价
+            price:"1999", 
+            cny:"14500", 
             desc:"1m elevation accuracy.", 
             updated:"2026-01-15", 
             images: [
-                "img/map1_1.jpg", "img/map1_2.jpg", "img/map1_3.jpg", "img/map1_4.jpg", "img/map1_5.jpg"
+                "map1_1.jpg","map1_2.jpg","map1_3.jpg","map1_4.jpg","map1_5.jpg"
             ] 
         },
         { 
             id:2, 
             name:"Mountain Terrain Map", 
-            originalPrice: "2499",
-            price: "1999",
+            price:"1999", 
+            cny:"14500", 
             desc:"3D slope analysis.", 
             updated:"2026-01-18", 
             images: [
-                "img/map2_1.jpg", "img/map2_2.jpg", "img/map2_3.jpg", "img/map2_4.jpg", "img/map2_5.jpg"
+                "map2_1.jpg","map2_2.jpg","map2_3.jpg","map2_4.jpg","map2_5.jpg"
             ] 
         },
         { 
             id:3, 
             name:"Coastal Topography Map", 
-            originalPrice: "2499",
-            price: "1999",
+            price:"1999", 
+            cny:"14500", 
             desc:"Hydrological data.", 
             updated:"2026-02-10", 
             images: [
-                "img/map3_1.jpg", "img/map3_2.jpg", "img/map3_3.jpg", "img/map3_4.jpg", "img/map3_5.jpg"
+                "map3_1.jpg","map3_2.jpg","map3_3.jpg","map3_4.jpg","map3_5.jpg"
             ] 
         },
         { 
             id:4, 
             name:"Forest Terrain Map", 
-            originalPrice: "2499",
-            price: "1999",
+            price:"1999", 
+            cny:"14500", 
             desc:"Vegetation coverage data.", 
             updated:"2026-02-20", 
             images: [
-                "img/map4_1.jpg", "img/map4_2.jpg", "img/map4_3.jpg", "img/map4_4.jpg", "img/map4_5.jpg"
+                "map4_1.jpg","map4_2.jpg","map4_3.jpg","map4_4.jpg","map4_5.jpg"
             ] 
         },
         { 
             id:5, 
             name:"Urban Planning Map", 
-            originalPrice: "2499",
-            price: "1999",
+            price:"1999", 
+            cny:"14500", 
             desc:"Infrastructure layers.", 
             updated:"2026-03-05", 
             images: [
-                "img/map5_1.jpg", "img/map5_2.jpg", "img/map5_3.jpg", "img/map5_4.jpg", "img/map5_5.jpg"
+                "map5_1.jpg","map5_2.jpg","map5_3.jpg","map5_4.jpg","map5_5.jpg"
             ] 
         },
         { 
             id:6, 
             name:"River System Map", 
-            originalPrice: "2499",
-            price: "1999",
+            price:"1999", 
+            cny:"14500", 
             desc:"Water flow data.", 
             updated:"2026-03-10", 
             images: [
-                "img/map6_1.jpg", "img/map6_2.jpg", "img/map6_3.jpg", "img/map6_4.jpg", "img/map6_5.jpg"
+                "map6_1.jpg","map6_2.jpg","map6_3.jpg","map6_4.jpg","map6_5.jpg"
             ] 
         }
     ];
@@ -1152,94 +1148,81 @@ allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></ifr
     const getPayImages = () => JSON.parse(localStorage.getItem('payImages'));
     const savePayImagesData = (data) => localStorage.setItem('payImages', JSON.stringify(data));
 
-    // 自动换算人民币
-    function toCNY(usd) {
-        return Math.round(parseFloat(usd) * USD_TO_CNY_RATE);
-    }
-
     function scrollToTop() { window.scrollTo({ top:0, behavior:'smooth' }); }
     function scrollToBottom() { window.scrollTo({ top:document.body.scrollHeight, behavior:'smooth' }); }
 
     function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    
-    const targetPage = document.getElementById(pageId);
-    if(targetPage) targetPage.classList.add('active');
-    
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        const onclickAttr = link.getAttribute('onclick');
-        if(onclickAttr && onclickAttr.includes(pageId)){
-            link.classList.add('active');
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        
+        const targetPage = document.getElementById(pageId);
+        if(targetPage) targetPage.classList.add('active');
+        
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            const onclickAttr = link.getAttribute('onclick');
+            if(onclickAttr && onclickAttr.includes(pageId)){
+                link.classList.add('active');
+            }
+        });
+
+        const homeMap = document.getElementById('homeMap');
+        if (pageId === 'home') {
+            setTimeout(()=>{ homeMap.classList.add('show'); },100);
+        } else {
+            homeMap.classList.remove('show');
         }
-    });
 
-    const homeMap = document.getElementById('homeMap');
+        const floatBtns = document.querySelectorAll('.float-btn');
+        if (pageId !== 'home') {
+            floatBtns.forEach(btn => btn.classList.add('show'));
+        } else {
+            floatBtns.forEach(btn => btn.classList.remove('show'));
+        }
 
-    // ✅ 修复：刚进入 home 自动显示地图
-    if (pageId === 'home') {
-        setTimeout(() => {
-            homeMap.classList.add('show');
-        }, 100);
-    } else {
-        homeMap.classList.remove('show');
+        if (pageId === 'store') {
+            renderMapProducts();
+        }
+
+        if (pageId === 'admin') {
+            renderAdminProducts();
+        }
     }
 
-    const floatBtns = document.querySelectorAll('.float-btn');
-    if (pageId !== 'home') {
-        floatBtns.forEach(btn => btn.classList.add('show'));
-    } else {
-        floatBtns.forEach(btn => btn.classList.remove('show'));
-    }
+    function renderMapProducts() {
+        const mapGrid = document.getElementById('mapGrid');
+        const products = getProducts();
+        mapGrid.innerHTML = '';
 
-    if (pageId === 'store') {
-        renderMapProducts();
-    }
-
-    if (pageId === 'admin') {
-        renderAdminProducts();
-    }
-}
-
-function renderMapProducts() {
-    const mapGrid = document.getElementById('mapGrid');
-    const products = getProducts();
-    mapGrid.innerHTML = '';
-
-    products.forEach(product => {
-        const card = document.createElement('div');
-        card.className = 'map-card';
-        const firstImg = product.images?.[0] || "img/001 (1).jpg";
-
-        card.innerHTML = `
-            <div class="map-preview-container">
-                <img src="${first}" class="map-main-preview" onclick="openImagePreview(${product.id}, 0)">
-                <div class="preview-thumbnails">
-                    ${product.images?.map((img, idx) => `
-                        <img src="${img}" class="preview-thumb ${idx===0?'active':''}" onclick="openImagePreview(${product.id},${idx})">
-                    `).join('')}
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'map-card';
+            card.innerHTML = `
+                <div class="map-preview-container">
+                    <img src="${product.images[0]}" class="map-main-preview" onclick="openImagePreview(${product.id}, 0)">
+                    <div class="preview-thumbnails">
+                        ${product.images.map((img, idx) => `
+                            <img src="${img}" class="preview-thumb ${idx === 0 ? 'active' : ''}" onclick="openImagePreview(${product.id}, ${idx})">
+                        `).join('')}
+                    </div>
                 </div>
-            </div>
-            <div class="map-info">
-                <h3 class="map-name">${product.name}</h3>
-                <p class="map-short-desc">${product.desc}</p>
-                
-                <div class="price-box">
-                    ${product.originalPrice ? `<span class="original-price">$${product.originalPrice}</span>` : ''}
-                    <span class="sale-price">$${product.price}</span>
-                    <span class="cny-price">¥${product.cny}</span>
+                <div class="map-info">
+                    <h3 class="map-name">${product.name}</h3>
+                    <p class="map-short-desc">${product.desc}</p>
+                    <div class="price-box">
+                        ${product.originalPrice ? `<span class="original-price">$${product.originalPrice}</span>` : ''}
+                        <span class="sale-price">$${product.price}</span>
+                        <span class="cny-price">¥${product.cny}</span>
+                    </div>
+                    <div class="map-actions">
+                        <button class="btn btn-preview" onclick="openImagePreview(${product.id}, 0)"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-primary" onclick="openBuyModal(${product.id})"><i class="fas fa-shopping-cart"></i> Buy Now</button>
+                    </div>
                 </div>
-
-                <div class="map-actions">
-                    <button class="btn btn-preview" onclick="openImagePreview(${product.id},0)"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-primary" onclick="openBuyModal(${product.id})"><i class="fas fa-shopping-cart"></i> Buy Now</button>
-                </div>
-            </div>
-        `;
-        mapGrid.appendChild(card);
-    });
-}
+            `;
+            mapGrid.appendChild(card);
+        });
+    }
 
     function openImagePreview(productId, index) {
         const products = getProducts();
@@ -1248,9 +1231,11 @@ function renderMapProducts() {
 
         currentPreviewProductId = productId;
         currentPreviewIndex = index;
+
         const modal = document.getElementById('imagePreviewModal');
         const previewImg = document.getElementById('previewMainImage');
         const counter = document.getElementById('previewCounter');
+
         previewImg.src = product.images[index];
         counter.textContent = `${index + 1}/${product.images.length}`;
         modal.style.display = 'flex';
@@ -1275,60 +1260,52 @@ function renderMapProducts() {
         counter.textContent = `${currentPreviewIndex + 1}/${product.images.length}`;
     }
 
-    // 购买弹窗（自动换算人民币）
-function openBuyModal(productId) {
-    // 每次打开都重新取最新商品，不使用缓存
-    const products = getProducts();
-    const product = products.find(p => p.id === productId);
-    if (!product) return;
+    function openBuyModal(productId) {
+        const products = getProducts();
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
 
-    currentBuyProduct = product;
+        currentBuyProduct = product;
 
-    const modal = document.getElementById('buyModal');
-    const slider = document.getElementById('buySlider');
-    const nameEl = document.getElementById('buyName');
-    const priceEl = document.getElementById('buyPrice');
-    const cnyEl = document.getElementById('buyCny');
-    const descEl = document.getElementById('buyDesc');
-    const orderNameEl = document.getElementById('orderMapName');
-    const updateDateEl = document.getElementById('updateDate');
+        const modal = document.getElementById('buyModal');
+        const slider = document.getElementById('buySlider');
+        const nameEl = document.getElementById('buyName');
+        const priceEl = document.getElementById('buyPrice');
+        const cnyEl = document.getElementById('buyCny');
+        const descEl = document.getElementById('buyDesc');
+        const orderNameEl = document.getElementById('orderMapName');
+        const updateDateEl = document.getElementById('updateDate');
 
-    slider.innerHTML = product.images.map(img => `<img src="${img}" alt="${product.name}">`).join('');
-    nameEl.textContent = product.name;
-    priceEl.textContent = `$${product.price}`;
-    cnyEl.textContent = `¥${product.cny}`;
-    descEl.textContent = product.desc;
-    orderNameEl.textContent = product.name;
-    updateDateEl.textContent = product.updated;
+        slider.innerHTML = product.images.map(img => `<img src="${img}" alt="${product.name}">`).join('');
+        nameEl.textContent = product.name;
+        priceEl.textContent = `$${product.price}`;
+        cnyEl.textContent = `¥${product.cny}`;
+        descEl.textContent = product.desc;
+        orderNameEl.textContent = product.name;
+        updateDateEl.textContent = product.updated;
 
-    modal.style.display = 'flex';
-}
+        modal.style.display = 'flex';
+    }
 
     function closeBuyModal() {
         document.getElementById('buyModal').style.display = 'none';
     }
 
-  // 完全同步：美元 + 人民币价格 100% 跟后台一致
-function openPayModal() {
-    const email = document.getElementById('buyerEmail').value;
-    if (!email || !email.includes('@')) {
-        alert('Please enter a valid email address!');
-        return;
+    function openPayModal() {
+        const email = document.getElementById('buyerEmail').value;
+        if (!email || !email.includes('@')) {
+            alert('Please enter a valid email address!');
+            return;
+        }
+
+        const real = getProducts().find(i=>i.id === currentBuyProduct.id);
+        const payModal = document.getElementById('payModal');
+        const payPrice = document.getElementById('payPrice');
+        payPrice.textContent = `Total: $${real.price} (¥${real.cny})`;
+
+        selectPayment('wechat');
+        payModal.style.display = 'flex';
     }
-
-    // ✅ 强制从 localStorage 拿最新的商品数据（这是关键！）
-    const allProducts = getProducts();
-    const realProduct = allProducts.find(p => p.id === currentBuyProduct.id);
-
-    const payModal = document.getElementById('payModal');
-    const payPrice = document.getElementById('payPrice');
-
-    // ✅ 这里 100% 显示你后台刚改的价格
-    payPrice.innerText = `Total: $${realProduct.price} (¥${realProduct.cny})`;
-
-    selectPayment('wechat');
-    payModal.style.display = 'flex';
-}
 
     function closePayModal() {
         document.getElementById('payModal').style.display = 'none';
@@ -1336,14 +1313,15 @@ function openPayModal() {
 
     function selectPayment(method) {
         if (method === 'paypal') return;
+
         selectedPaymentMethod = method;
         document.querySelectorAll('.pay-method').forEach(pm => pm.classList.remove('active'));
-        const activeMethod = document.querySelector(`.pay-method[onclick*="${method}"]`);
-        if (activeMethod) activeMethod.classList.add('active');
+        const m = document.querySelector(`.pay-method[onclick*="${method}"]`);
+        if(m) m.classList.add('active');
 
         const payImages = getPayImages();
-        const qrImg = document.querySelector('#paymentQRCode img');
-        qrImg.src = payImages[method] || `img/${method}_qr_default.png`;
+        const qr = document.querySelector('#paymentQRCode img');
+        qr.src = payImages[method] || `${method}_qr_default.png`;
     }
 
     function confirmPayment() {
@@ -1353,9 +1331,9 @@ function openPayModal() {
     }
 
     function adminLogin() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        if (username === 'admin' && password === 'admin123') {
+        const u = document.getElementById('username').value;
+        const p = document.getElementById('password').value;
+        if (u === 'admin' && p === 'admin123') {
             showPage('admin');
         } else {
             alert('Invalid username or password!');
@@ -1366,192 +1344,107 @@ function openPayModal() {
         document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
         document.getElementById(panelId).classList.add('active');
-        const activeTab = Array.from(document.querySelectorAll('.admin-tab')).find(t => t.onclick.toString().includes(panelId));
-        if (activeTab) activeTab.classList.add('active');
-        if (panelId === 'goodsPanel') renderAdminProducts();
+        const tab = Array.from(document.querySelectorAll('.admin-tab')).find(t=>t.onclick.toString().includes(panelId));
+        if(tab) tab.classList.add('active');
+        if(panelId==='goodsPanel') renderAdminProducts();
     }
 
-    // 后台商品列表
-function renderAdminProducts() {
-    const container = document.getElementById('adminGoodsContainer');
-    const products = getProducts();
-    
-    container.innerHTML = `
-        <h3 class="card-title"><i class="fas fa-box"></i> Products List</h3>
-        <div style="margin-bottom: 20px;">
-            <button class="btn btn-primary" onclick="addNewProduct()"><i class="fas fa-plus"></i> Add New Product</button>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
-            ${products.map(product => `
-                <div class="card" style="padding: 20px;">
-                    <h4 style="margin-bottom: 10px;">${product.name}</h4>
-                    <div style="margin-bottom: 10px;">
-                        <img src="${product.images[0]}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;" alt="${product.name}">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <p><strong>Original:</strong> $${product.originalPrice}</p>
-                        <p><strong>Now:</strong> $${product.price}</p>
-                        <p><strong>CNY:</strong> ¥${toCNY(product.price)}</p>
-                        <p><strong>Updated:</strong> ${product.updated}</p>
-                        <p><strong>Desc:</strong> ${product.desc}</p>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-top: 8px;">
-                        <button class="btn btn-primary" style="flex:1" onclick="editProduct(${product.id})"><i class="fas fa-edit"></i> Edit</button>
-                        <button class="btn btn-cancel" style="flex:1" onclick="deleteProduct(${product.id})"><i class="fas fa-trash"></i> Delete</button>
-                    </div>
-                </div>
-            `).join('')}
-        </div>
-    `;
-}
-
-    // 新增商品
-    function addNewProduct() {
-        const newId = getProducts().length + 1;
-        const newProduct = {
-            id: newId,
-            name: "New Map",
-            originalPrice: "2499",
-            price: "1999",
-            desc: "New map",
-            updated: new Date().toISOString().split('T')[0],
-            images: ["img/new1.jpg","img/new2.jpg","img/new3.jpg","img/new4.jpg","img/new5.jpg"]
-        };
+    function renderAdminProducts() {
+        const container = document.getElementById('adminGoodsContainer');
         const products = getProducts();
-        products.push(newProduct);
+        container.innerHTML = `
+            <h3 class="card-title"><i class="fas fa-box"></i> Products List</h3>
+            <div style="margin-bottom:20px;">
+                <button class="btn btn-primary" onclick="addNewProduct()"><i class="fas fa-plus"></i> Add New Product</button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
+                ${products.map(p=>`
+                    <div class="card" style="padding:20px;">
+                        <h4 style="margin-bottom:10px;">${p.name}</h4>
+                        <div style="margin-bottom:10px;">
+                            <img src="${p.images[0]}" style="width:100%;height:150px;object-fit:cover;border-radius:8px;">
+                        </div>
+                        <div style="margin-bottom:10px;">
+                            <p><strong>Original:</strong> $${p.originalPrice || '0'}</p>
+                            <p><strong>Price:</strong> $${p.price} (¥${p.cny})</p>
+                            <p><strong>Updated:</strong> ${p.updated}</p>
+                            <p><strong>Desc:</strong> ${p.desc}</p>
+                        </div>
+                        <div style="display:flex;gap:10px;">
+                            <button class="btn btn-primary" style="flex:1" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn btn-cancel" style="flex:1" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i> Delete</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function addNewProduct() {
+        const products = getProducts();
+        const newId = products.length+1;
+        const np = {
+            id:newId, name:"New Product", price:"1999", cny:"14500", originalPrice:"",
+            desc:"New desc", updated:new Date().toISOString().split('T')[0],
+            images:["new1.jpg","new2.jpg","new3.jpg","new4.jpg","new5.jpg"]
+        };
+        products.push(np);
         saveProducts(products);
         renderAdminProducts();
     }
-function editProduct(productId) {
-    const p = getProducts().find(x => x.id === productId);
-    if (!p) return;
 
-    const panel = document.createElement("div");
-    panel.id = "editModalPanel";
-    panel.innerHTML = `
-    <div style="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:grid;place-items:center;padding:20px;">
-        <div style="background:white;border-radius:16px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;padding:30px;">
-            <h3 style="margin-bottom:20px;">Edit Product</h3>
-            
-            <div class="form-group">
-                <label class="form-label">Product Name</label>
-                <input class="form-input" id="e_name" value="${p.name}">
-            </div>
+    function editProduct(pid) {
+        const p = getProducts().find(i=>i.id===pid);
+        if(!p) return;
+        const nn = prompt("New name",p.name); if(!nn) return;
+        const no = prompt("Original price (USD)",p.originalPrice||'');
+        const np = prompt("Sale price (USD)",p.price);
+        const nc = prompt("CNY price",p.cny);
+        const nd = prompt("Description",p.desc);
+        p.name=nn; p.originalPrice=no; p.price=np; p.cny=nc; p.desc=nd;
+        saveProducts(getProducts());
+        renderAdminProducts();
+    }
 
-            <div class="form-group">
-                <label class="form-label">Original Price (USD)</label>
-                <input class="form-input" id="e_originalPrice" value="${p.originalPrice || ''}">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Sale Price (USD)</label>
-                <input class="form-input" id="e_price" value="${p.price}">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">CNY Price</label>
-                <input class="form-input" id="e_cny" value="${p.cny}">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Description</label>
-                <textarea class="form-textarea" id="e_desc">${p.desc}</textarea>
-            </div>
-
-            <div style="margin:24px 0;border-top:1px solid #eee;padding-top:20px;">
-                <h4 style="margin-bottom:14px;color:var(--primary);">Image Paths</h4>
-                ${[0,1,2,3,4].map(i => `
-                <div class="form-group" style="margin-bottom:10px;">
-                    <label>Image ${i+1}</label>
-                    <input class="form-input" id="e_img${i}" value="${p.images[i] || ''}">
-                </div>
-                `).join('')}
-            </div>
-
-            <div style="display:flex;gap:12px;margin-top:10px;">
-                <button class="btn btn-primary" style="flex:1;" onclick="saveEdit(${p.id})">Save</button>
-                <button class="btn btn-cancel" style="flex:1;" onclick="closeEditModal()">Cancel</button>
-            </div>
-        </div>
-    </div>`;
-    document.body.appendChild(panel);
-}
-
-// 关闭编辑弹窗（新增）
-function closeEditModal() {
-    const modal = document.getElementById("editModalPanel");
-    if (modal) modal.remove();
-}
-
-// 保存编辑：原价 + 售价 + 图片全部保存
-function saveEdit(id) {
-    const list = getProducts();
-    const item = list.find(x => x.id === id);
-    if (!item) return;
-
-    item.name = document.getElementById('e_name').value;
-    item.originalPrice = document.getElementById('e_originalPrice').value;
-    item.price = document.getElementById('e_price').value;
-    item.cny = document.getElementById('e_cny').value;
-    item.desc = document.getElementById('e_desc').value;
-
-    item.images = [
-        document.getElementById('e_img0').value,
-        document.getElementById('e_img1').value,
-        document.getElementById('e_img2').value,
-        document.getElementById('e_img3').value,
-        document.getElementById('e_img4').value
-    ];
-
-    saveProducts(list);
-    renderMapProducts();
-    renderAdminProducts();
-    closeEditModal();
-    alert('Saved successfully!');
-}
-
-    function deleteProduct(productId) {
-        if(confirm('Delete?')){
-            saveProducts(getProducts().filter(x => x.id !== productId));
-            renderAdminProducts();
-        }
+    function deleteProduct(pid) {
+        if(!confirm("Delete?")) return;
+        let list = getProducts().filter(i=>i.id!==pid);
+        saveProducts(list);
+        renderAdminProducts();
     }
 
     function uploadPaymentQR(type) {
-        const inp = document.getElementById(type+'_qr');
-        const f = inp.files[0];
-        if(!f) return alert('Select image!');
+        const f = document.getElementById(type+'_qr').files[0];
+        if(!f){alert("Select image!");return;}
         const r = new FileReader();
-        r.onload = e=>{
-            const d = getPayImages();
-            d[type] = e.target.result;
-            savePayImagesData(d);
-            alert('Saved!');
-        };
-        r.readAsDataURL(f);
+        r.onload=e=>{
+            const d=getPayImages(); d[type]=e.target.result;
+            savePayImagesData(d); alert("Success!");
+        }; r.readAsDataURL(f);
     }
 
     function changePassword() {
-        const n = document.getElementById('new_password').value;
-        const c = document.getElementById('confirm_password').value;
-        if(!n || !c) return alert('Fill all!');
-        if(n!==c) return alert('Not match!');
-        alert('Updated!');
+        const n=document.getElementById('new_password').value;
+        const c=document.getElementById('confirm_password').value;
+        if(!n||!c){alert("Enter password!");return;}
+        if(n!==c){alert("Not match!");return;}
+        alert("Updated!");
         document.getElementById('new_password').value='';
         document.getElementById('confirm_password').value='';
     }
 
-    window.onload = function(){
+    window.onload=function(){
         initStorage();
-        window.onscroll = ()=>{
-            const btns = document.querySelectorAll('.float-btn');
-            window.scrollY>300 ? btns.forEach(b=>b.classList.add('show')) : btns.forEach(b=>b.classList.remove('show'));
+        window.onscroll=()=>{
+            const b=document.querySelectorAll('.float-btn');
+            window.scrollY>300 ? b.forEach(i=>i.classList.add('show')) : b.forEach(i=>i.classList.remove('show'));
         };
-        window.onclick = e=>{
-            if(e.target === document.getElementById('buyModal')) closeBuyModal();
-            if(e.target === document.getElementById('payModal')) closePayModal();
-            if(e.target === document.getElementById('imagePreviewModal')) closeImagePreview();
+        window.onclick=e=>{
+            if(e.target===document.getElementById('buyModal')) closeBuyModal();
+            if(e.target===document.getElementById('payModal')) closePayModal();
+            if(e.target===document.getElementById('imagePreviewModal')) closeImagePreview();
         };
+        showPage('home');
     };
 </script>
 </body>
