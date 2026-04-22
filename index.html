@@ -674,6 +674,24 @@
             .map-grid { grid-template-columns: 1fr; }
             .viewer-arrow { display: none; }
         }
+/* 居中提示弹窗 */
+.modal-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #0011ff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  font-size: 15px;
+  z-index: 9999;
+  display: none;
+  white-space: nowrap;
+}
+.modal-toast.show {
+  display: block;
+}
     </style>
 </head>
 <body>
@@ -842,9 +860,9 @@ Choose Map Studio, and enjoy reliable, professional, and efficient geographic da
             <div class="pay-method-item" onclick="payWithAli()">
                 <i class="fab fa-alipay"></i> Alipay
             </div>
-            <div class="pay-method-item" onclick="payWithPal()">
-                <i class="fab fa-paypal"></i> PayPal
-            </div>
+<div class="pay-method-item" onclick="payWithPal()">
+    <i class="fab fa-paypal"></i> PayPal
+</div>
         </div>
         <div class="pay-note">Please complete payment to receive your map</div>
         <button class="btn" onclick="closePayModal()" style="margin-top:16px;background:#eee;color:#333">Cancel</button>
@@ -856,7 +874,7 @@ Choose Map Studio, and enjoy reliable, professional, and efficient geographic da
     <div class="qr-box">
         <button class="qr-close" onclick="closeQR()"><i class="fas fa-times"></i></button>
         <div class="qr-title" id="qrTitle"></div>
-        <img src="" id="qrImg" class="qr-img">
+        <img src="img/v.jpg" id="qrImg" class="qr-img">
         <div class="qr-price" id="qrPrice"></div>
         <div class="qr-note">Please scan the QR code to pay</div>
         <button class="btn" onclick="paySuccess()">I have paid</button>
@@ -1078,16 +1096,21 @@ function closePayModal() {
 function payWithWX() { showQR('WeChat Pay'); }
 function payWithAli() { showQR('Alipay'); }
 function payWithPal() {
-    closePayModal();
-    alert('PayPal is not supported in your region. We have selected an agent for you.');
+  const toast = document.getElementById('payToast');
+  toast.textContent = "Recognized your current location, this payment method is unavailable";
+  toast.classList.add('show');
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 4000);
 }
 
 function showQR(title) {
     document.getElementById('qrTitle').textContent = title;
     document.getElementById('qrPrice').textContent = `Total: $${currProduct.price} (¥${currProduct.cny})`;
     const src = title.includes('WeChat')
-        ? 'https://via.placeholder.com/220/fff&text=WECHAT_QR'
-        : 'https://via.placeholder.com/220/fff&text=ALIPAY_QR';
+        ? 'img/v.jpg'
+        : 'img/z.jpg';
     document.getElementById('qrImg').src = src;
     document.getElementById('qrModal').classList.add('show');
 }
@@ -1122,5 +1145,6 @@ window.onload = () => {
     showPage('home');
 };
 </script>
+<div class="modal-toast" id="payToast"></div>
 </body>
 </html>
